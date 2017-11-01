@@ -99,7 +99,7 @@ ProjectVector<T,N>& ProjectVector<T,N>::operator-=(const ProjectVector<T,N>& rig
 
 
 template<typename T, int N>
-T& ProjectVector<T,N>::operator*(const ProjectVector<T,N>& rightHandObj)
+T ProjectVector<T,N>::operator*(const ProjectVector<T,N>& rightHandObj)
 {
     T answ = T(0);
     int i = 0;
@@ -118,7 +118,7 @@ T& ProjectVector<T,N>::operator*(const ProjectVector<T,N>& rightHandObj)
 
 // Vector * T
 template<typename T, int N>
-ProjectVector<T,N>& ProjectVector<T,N>::operator*(const T& scalar)
+ProjectVector<T,N> ProjectVector<T,N>::operator*(const T& scalar)
 {
     ProjectVector<T,N> answ;
     int i = 0;
@@ -133,7 +133,7 @@ ProjectVector<T,N>& ProjectVector<T,N>::operator*(const T& scalar)
 
 // T * Vector
 template<typename T, int N>
-ProjectVector<T,N>& operator*(const T& scalar, const ProjectVector<T,N>& vector)
+ProjectVector<T,N> operator*(const T& scalar, const ProjectVector<T,N>& vector)
 {
     ProjectVector<T,N> answ;
     int i = 0;
@@ -211,6 +211,7 @@ template<typename T>
 Vec3T<T> Vec3T<T>::cross(const Vec3T<T>& other)
 {
     Vec3T<T> answ;
+
     // x = y1*z2 - z1*y2
     answ[0] = (this->data[1] * other[2]) - (this->data[2] * other[1]);
     // y = z1*x2 - x1*z2
@@ -219,6 +220,12 @@ Vec3T<T> Vec3T<T>::cross(const Vec3T<T>& other)
     answ[2] = (this->data[0] * other[1]) - (this->data[1] * other[0]);
 
     return answ;
+}
+
+
+Vec3D Vec3D::cross(const Vec3D &other)
+{
+    return Vec3T<double>::cross(other);
 }
 
 

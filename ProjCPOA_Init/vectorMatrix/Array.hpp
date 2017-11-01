@@ -131,4 +131,12 @@ std::ostream& operator<<(std::ostream& os, Array<T,N>& obj)
     return os;
 }
 
+
+template<typename T, int N>
+std::istream& operator>>(std::istream& is, Array<T,N>& obj)
+{
+    obj.toString() >> is;
+    return is;
+}
+
 #endif

@@ -79,7 +79,7 @@ public:
      * @param rightHandObj right hand object of the operation
      * @return
      */
-     T& operator*(const ProjectVector<T,N>& rightHandObj);
+     T operator*(const ProjectVector<T,N>& rightHandObj);
 
 
     // Operators with a vector and a scalar (*, /, *=, /=)
@@ -89,7 +89,7 @@ public:
      * @param scalar
      * @return
      */
-    ProjectVector<T,N>& operator*(const T& scalar);
+    ProjectVector<T,N> operator*(const T& scalar);
 
 
     /**
@@ -124,7 +124,7 @@ public:
  * @return
  */
 template<typename T, int N>
-ProjectVector<T,N>& operator*(const T& scalar, const ProjectVector<T,N>& vector);
+ProjectVector<T,N> operator*(const T& scalar, const ProjectVector<T,N>& vector);
 
 
 /**
@@ -204,6 +204,27 @@ public:
 
 
     /**
+     * @brief Vec2I Constructor for cast from Vec2T<int> to Vec2I (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec2I(Vec2T<int> vec) : Vec2T<int>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+    }
+
+    /**
+     * @brief Vec2I Constructor for cast from ProjectVector<int, 2> to Vec2I (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec2I(ProjectVector<int, 2> vec) : Vec2T<int>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+    }
+
+
+    /**
      * @brief Vec2I constructor with brace-enclosed initilization. Initialize data members with given values or 0 if unknown
      * @param elements
      */
@@ -212,22 +233,43 @@ public:
 
 
 /**
- * @brief The Vec2F class
+ * @brief The Vec2D class
  */
-class Vec2F : public Vec2T<float>
+class Vec2D : public Vec2T<double>
 {
 public:
     /**
-     * @brief Vec2F constructor without arguments. Initialize all data members to 0.0f
+     * @brief Vec2D constructor without arguments. Initialize all data members to 0.0f
      */
-    Vec2F() : Vec2T() {}
+    Vec2D() : Vec2T() {}
 
 
     /**
-     * @brief Vec2F constructor with brace-enclosed initilization. Initialize data members with given values or 0.0f if unknown
+     * @brief Vec2D Constructor for cast from Vec2T<double> to Vec2D (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec2D(Vec2T<double> vec) : Vec2T<double>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+    }
+
+    /**
+     * @brief Vec2D Constructor for cast from ProjectVector<double, 2> to Vec2D (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec2D(ProjectVector<double, 2> vec) : Vec2T<double>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+    }
+
+
+    /**
+     * @brief Vec2D constructor with brace-enclosed initilization. Initialize data members with given values or 0.0f if unknown
      * @param elements
      */
-    Vec2F(std::initializer_list<float> elements) : Vec2T<float>(elements) {}
+    Vec2D(std::initializer_list<double> elements) : Vec2T<double>(elements) {}
 };
 
 
@@ -244,6 +286,29 @@ public:
 
 
     /**
+     * @brief Vec3I Constructor for cast from Vec3T<int> to Vec3I (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec3I(Vec3T<int> vec) : Vec3T<int>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+        data[2] = vec[2];
+    }
+
+    /**
+     * @brief Vec3I Constructor for cast from ProjectVector<int, 3> to Vec3I (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec3I(ProjectVector<int, 3> vec) : Vec3T<int>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+        data[2] = vec[2];
+    }
+
+
+    /**
      * @brief Vec3I constructor with brace-enclosed initilization. Initialize data members with given values or 0 if unknown
      * @param elements
      */
@@ -252,22 +317,48 @@ public:
 
 
 /**
- * @brief The Vec3F class
+ * @brief The Vec3D class
  */
-class Vec3F : public Vec3T<float>
+class Vec3D : public Vec3T<double>
 {
 public:
     /**
-     * @brief Vec3F constructor without arguments. Initialize all data members to 0.0f
+     * @brief Vec3D constructor without arguments. Initialize all data members to 0.0f
      */
-    Vec3F() : Vec3T<float>() {}
+    Vec3D() : Vec3T<double>() {}
+
+    /**
+     * @brief Vec3D Constructor for cast from Vec3T<double> to Vec3D (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec3D(Vec3T<double> vec) : Vec3T<double>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+        data[2] = vec[2];
+    }
+
+    /**
+     * @brief Vec3D Constructor for cast from ProjectVector<double, 3> to Vec3D (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec3D(ProjectVector<double, 3> vec) : Vec3T<double>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+        data[2] = vec[2];
+    }
 
 
     /**
-     * @brief Vec3F constructor with brace-enclosed initilization. Initialize data members with given values or 0.0f if unknown
+     * @brief Vec3D constructor with brace-enclosed initilization. Initialize data members with given values or 0.0f if unknown
      * @param elements
      */
-    Vec3F(std::initializer_list<float> elements) : Vec3T<float>(elements) {}
+    Vec3D(std::initializer_list<double> elements) : Vec3T<double>(elements) {}
+
+public:
+
+    Vec3D cross(const Vec3D &other);
 };
 
 
@@ -278,13 +369,26 @@ class Vec4I : public ProjectVector<int,4>
 {
 public:
     /**
-     * @brief Vec3F constructor without arguments. Initialize all data members to 0
+     * @brief Vec4I constructor without arguments. Initialize all data members to 0
      */
     Vec4I() : ProjectVector<int,4>() {}
 
 
     /**
-     * @brief Vec3F constructor with brace-enclosed initilization. Initialize data members with given values or 0 if unknown
+     * @brief Vec4I Constructor for cast from ProjectVector<int, 4> to Vec4I (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec4I(ProjectVector<int, 4> vec) : ProjectVector<int, 4>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+        data[2] = vec[2];
+        data[3] = vec[3];
+    }
+
+
+    /**
+     * @brief Vec4I constructor with brace-enclosed initilization. Initialize data members with given values or 0 if unknown
      * @param elements
      */
     Vec4I(std::initializer_list<int> elements) : ProjectVector<int,4>(elements) {}
@@ -292,22 +396,35 @@ public:
 
 
 /**
- * @brief The Vec4F class
+ * @brief The Vec4D class
  */
-class Vec4F : public ProjectVector<float,4>
+class Vec4D : public ProjectVector<double,4>
 {
 public:
     /**
-     * @brief Vec3F constructor without arguments. Initialize all data members to 0.0f
+     * @brief Vec4D constructor without arguments. Initialize all data members to 0.0f
      */
-    Vec4F() : ProjectVector<float,4>() {}
+    Vec4D() : ProjectVector<double,4>() {}
 
 
     /**
-     * @brief Vec3F constructor with brace-enclosed initilization. Initialize data members with given values or 0.0f if unknown
+     * @brief Vec4D Constructor for cast from ProjectVector<double, 4> to Vec4D (used for usage of mother class methods)
+     * @param vec
+     */
+    Vec4D(ProjectVector<double, 4> vec) : ProjectVector<double, 4>()
+    {
+        data[0] = vec[0];
+        data[1] = vec[1];
+        data[2] = vec[2];
+        data[3] = vec[3];
+    }
+
+
+    /**
+     * @brief Vec4D constructor with brace-enclosed initilization. Initialize data members with given values or 0.0f if unknown
      * @param elements
      */
-    Vec4F(std::initializer_list<float> elements) : ProjectVector<float,4>(elements) {}
+    Vec4D(std::initializer_list<double> elements) : ProjectVector<double,4>(elements) {}
 };
 
 #endif
