@@ -6,7 +6,7 @@ add_executable(test_vec test_vec.cpp)
 
 target_include_directories(test_vec PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
-	${CMAKE_CURRENT_SOURCE_DIR}/..)
+        ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 target_link_libraries(test_vec vector_matrix )
 

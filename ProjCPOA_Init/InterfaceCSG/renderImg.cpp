@@ -4,6 +4,7 @@
 
 //#include "imgGradient.h"
 //#include "boundingbox.h"
+#include "Array.hpp"
 #include <limits>
 
 
