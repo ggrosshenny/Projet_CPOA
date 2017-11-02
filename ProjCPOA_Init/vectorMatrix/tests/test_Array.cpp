@@ -19,6 +19,13 @@ int main()
     test = test2;
     std::cout << "After test = test2 - test : " << test.toString() << " et test2 : " << test2.toString() << std::endl;
 
+
+    DynamicArray<double> testda = {2.0, 3.0, 4.0, 5.0};
+
+    double dbl = testda[0];
+
+    std::cout << "testda[0] : " << dbl << std::endl;
+
     return 0;
 }
 

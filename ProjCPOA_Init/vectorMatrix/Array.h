@@ -100,4 +100,89 @@ public:
 
 };
 
+
+
+template<typename T>
+class DynamicArray
+{
+protected:
+    T* data;
+    unsigned int nb_elements;
+
+
+// Constructor and destructor
+public:
+
+    /**
+     * @brief DynamicArray
+     */
+    DynamicArray();
+
+
+    /**
+     * @brief DynamicArray
+     * @param size
+     */
+    DynamicArray(const unsigned int size);
+
+
+    /**
+     * @brief DynamicArray
+     * @param elements
+     */
+    DynamicArray(std::initializer_list<T> elements);
+
+
+    ~DynamicArray();
+
+
+// Methods
+public:
+
+    /**
+     * @brief toString return a string version of the Array
+     * @return
+     */
+    std::string toString();
+
+
+    /**
+     * @brief size return the size of data
+     * @return
+     */
+    unsigned int size();
+
+
+    T* getPtr();
+
+// Operator overload
+public:
+
+    /**
+     * @brief operator [] overload of the accessor (get) operator
+     * @param i
+     * @return
+     */
+    T operator[](int i) const;
+
+
+    /**
+     * @brief operator [] overload of the accessor (set) operator
+     * @param i
+     * @return
+     */
+    T& operator[](int i);
+
+
+    /**
+     * @brief operator = overload of the affectation operator
+     * @param other
+     * @return
+     */
+    DynamicArray<T>& operator=(DynamicArray<T>& other);
+
+
+
+};
+
 #endif
