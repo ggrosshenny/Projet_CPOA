@@ -151,7 +151,7 @@ public:
      * @param other
      * @return
      */
-    T& cross(const Vec2T<T>& other);
+    T cross(Vec2T<T>& other);
 };
 
 
@@ -356,9 +356,7 @@ public:
      */
     Vec3D(std::initializer_list<double> elements) : Vec3T<double>(elements) {}
 
-public:
 
-    Vec3D cross(const Vec3D &other);
 };
 
 

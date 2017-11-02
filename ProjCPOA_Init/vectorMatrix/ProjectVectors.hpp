@@ -195,9 +195,10 @@ ProjectVector<T,N>& ProjectVector<T,N>::operator/=(const T& scalar)
 
 
 template<typename T>
-T& Vec2T<T>::cross(const Vec2T<T> &other)
+T Vec2T<T>::cross(Vec2T<T> &other)
 {
-    return (this->data[0] * other[1]) - (this->data[1] * other[0]);
+    T answ = (this->data[0] * other[1]) - (this->data[1] * other[0]);
+    return answ;
 }
 
 
@@ -220,12 +221,6 @@ Vec3T<T> Vec3T<T>::cross(const Vec3T<T>& other)
     answ[2] = (this->data[0] * other[1]) - (this->data[1] * other[0]);
 
     return answ;
-}
-
-
-Vec3D Vec3D::cross(const Vec3D &other)
-{
-    return Vec3T<double>::cross(other);
 }
 
 

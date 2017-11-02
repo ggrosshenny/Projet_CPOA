@@ -85,6 +85,56 @@
             <DistClean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
+      <Target title="test_vec">
+         <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/test_vec" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/tests" />
+            <Add directory="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/tests/.." />
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/c++/5" />
+            <Add directory="/usr/include/c++/5/backward" />
+            <Add directory="/usr/include/x86_64-linux-gnu" />
+            <Add directory="/usr/include/x86_64-linux-gnu/c++/5" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 test_vec" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="test_vec/fast">
+         <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/test_vec" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/tests" />
+            <Add directory="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/tests/.." />
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/c++/5" />
+            <Add directory="/usr/include/c++/5/backward" />
+            <Add directory="/usr/include/x86_64-linux-gnu" />
+            <Add directory="/usr/include/x86_64-linux-gnu/c++/5" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 test_vec/fast" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
       <Target title="test_mat">
          <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/test_mat" prefix_auto="0" extension_auto="0" />
          <Option working_dir="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests" />
@@ -135,8 +185,8 @@
             <DistClean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
-      <Target title="test_vec">
-         <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/test_vec" prefix_auto="0" extension_auto="0" />
+      <Target title="test_array">
+         <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/test_array" prefix_auto="0" extension_auto="0" />
          <Option working_dir="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests" />
          <Option object_output="./" />
          <Option type="1" />
@@ -154,14 +204,14 @@
             <Add directory="/usr/local/include" />
          </Compiler>
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 test_vec" />
+            <Build command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 test_array" />
             <CompileFile command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
             <Clean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 clean" />
             <DistClean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
-      <Target title="test_vec/fast">
-         <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/test_vec" prefix_auto="0" extension_auto="0" />
+      <Target title="test_array/fast">
+         <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/test_array" prefix_auto="0" extension_auto="0" />
          <Option working_dir="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests" />
          <Option object_output="./" />
          <Option type="1" />
@@ -179,7 +229,7 @@
             <Add directory="/usr/local/include" />
          </Compiler>
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 test_vec/fast" />
+            <Build command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 test_array/fast" />
             <CompileFile command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
             <Clean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 clean" />
             <DistClean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/vectorMatrix/tests/Makefile&quot;  VERBOSE=1 clean" />
@@ -300,6 +350,12 @@
       <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/Array.hpp">
          <Option target="vector_matrix"/>
       </Unit>
+      <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/Matrix33d.cpp">
+         <Option target="vector_matrix"/>
+      </Unit>
+      <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/Matrix33d.h">
+         <Option target="vector_matrix"/>
+      </Unit>
       <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/ProjectVectors.h">
          <Option target="vector_matrix"/>
       </Unit>
@@ -308,6 +364,9 @@
       </Unit>
       <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/tests/testMatrix.cpp">
          <Option target="test_mat"/>
+      </Unit>
+      <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/tests/test_Array.cpp">
+         <Option target="test_array"/>
       </Unit>
       <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/vectorMatrix/tests/test_vec.cpp">
          <Option target="test_vec"/>
