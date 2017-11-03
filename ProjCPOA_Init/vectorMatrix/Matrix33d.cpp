@@ -52,6 +52,7 @@ Matrix33D::Matrix33D(std::initializer_list<std::initializer_list<double>> elemen
             }
         }
         i++;
+        j = 0;
     }
 }
 

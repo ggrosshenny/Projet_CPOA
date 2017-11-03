@@ -6,7 +6,9 @@ int main()
 {
 
     Matrix33D m1 = Matrix33D::identity();
+    Matrix33D m10 = {{1.0, 0.0, 0.0},{0.0, 1.0, 0.0},{0.0, 0.0, 1.0}};
 
+    std::cout << m10 << std::endl;
     std::cout << m1 << std::endl;
 	std::cout << "translate(3.5f,2.4f) "<<  std::endl;
     m1.translate(3.5f,2.4f);

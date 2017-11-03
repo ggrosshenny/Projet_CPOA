@@ -44,6 +44,38 @@ Img2D<T>::Img2D(int height0, int width0)
 
 
 template<typename T>
+Img2D<T>::Img2D(std::initializer_list<std::initializer_list<T>> elements)
+{
+    unsigned int i = 0;
+    unsigned int j = 0;
+
+    this->
+
+
+    i=0;
+    j=0;
+
+    for(auto it = elements.begin(); it != elements.end(); ++it)
+    {
+        if(i < 3)
+        {
+            for(auto subIt = it->begin(); subIt != it->end(); ++subIt)
+            {
+                if(j<3)
+                {
+                    data[i][j] = *subIt;
+                }
+                j++;
+            }
+        }
+        i++;
+        j = 0;
+    }
+}
+
+
+
+template<typename T>
 Img2D<T>::~Img2D()
 {
 

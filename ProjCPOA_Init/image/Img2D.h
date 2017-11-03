@@ -31,6 +31,13 @@ public:
     Img2D(int height0, int width0);
 
 
+    /**
+     * @brief Img2D
+     * @param elements
+     */
+    Img2D(std::initializer_list<std::initializer_list<T>> elements);
+
+
     ~Img2D();
 
 // operator overload
