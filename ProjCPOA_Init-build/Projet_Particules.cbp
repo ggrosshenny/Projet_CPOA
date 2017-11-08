@@ -285,6 +285,56 @@
             <DistClean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
+      <Target title="test_img2DGrey">
+         <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/test_img2DGrey" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/tests" />
+            <Add directory="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/tests/.." />
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/c++/5" />
+            <Add directory="/usr/include/c++/5/backward" />
+            <Add directory="/usr/include/x86_64-linux-gnu" />
+            <Add directory="/usr/include/x86_64-linux-gnu/c++/5" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/Makefile&quot;  VERBOSE=1 test_img2DGrey" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="test_img2DGrey/fast">
+         <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/test_img2DGrey" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/tests" />
+            <Add directory="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/tests/.." />
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/c++/5" />
+            <Add directory="/usr/include/c++/5/backward" />
+            <Add directory="/usr/include/x86_64-linux-gnu" />
+            <Add directory="/usr/include/x86_64-linux-gnu/c++/5" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/Makefile&quot;  VERBOSE=1 test_img2DGrey/fast" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
       <Target title="test_img2D">
          <Option output="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests/test_img2D" prefix_auto="0" extension_auto="0" />
          <Option working_dir="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init-build/image/tests" />
@@ -447,11 +497,20 @@
       <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/Img2D.hpp">
          <Option target="image"/>
       </Unit>
+      <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/Img2DGrey.cpp">
+         <Option target="image"/>
+      </Unit>
+      <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/Img2DGrey.h">
+         <Option target="image"/>
+      </Unit>
       <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/imgGradient.cpp">
          <Option target="image"/>
       </Unit>
       <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/imgGradient.h">
          <Option target="image"/>
+      </Unit>
+      <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/tests/test_Img2DGrey.cpp">
+         <Option target="test_img2DGrey"/>
       </Unit>
       <Unit filename="/home/guillaume/Guillaume/Cours/M1/S7/CPOA/Projet_git/ProjCPOA_Init/image/tests/test_img2D.cpp">
          <Option target="test_img2D"/>

@@ -60,14 +60,14 @@ T* Array<T,N>::get_ptr()
 template<typename T, int N>
 void Array<T,N>::swapData(Array<T,N>& other)
 {
-    T tempElem;
+    T *tempElem;
     int i = 0;
 
     for(i=0; i<N; i++)
     {
-        tempElem = *this[i];
-        *this[i] = other[i];
-        other[i] = tempElem;
+        tempElem = this->get_ptr();
+        this->data[i] = other[i];
+        other[i] = tempElem[i];
     }
 }
 
@@ -199,15 +199,29 @@ template<typename T>
 std::string DynamicArray<T>::toString()
 {
     std::stringstream strArray;
-    int i = 0;
+    unsigned int i = 0;
 
     strArray << "[";
 
     for(i=0; i<(this->nb_elements-1); i++)
     {
-        strArray << this->data[i] << ", ";
+        if ((std::is_same<T, unsigned char>::value) || (std::is_same<T, char>::value))
+        {
+            strArray << (int)this->data[i] << ", ";
+        }
+        else
+        {
+            strArray << this->data[i] << ", ";
+        }
     }
-    strArray << this->data[this->nb_elements-1] << "]";
+    if ((std::is_same<T, unsigned char>::value) || (std::is_same<T, char>::value))
+    {
+        strArray << (int)this->data[this->nb_elements-1] << "]";
+    }
+    else
+    {
+        strArray << this->data[this->nb_elements-1] << "]";
+    }
     return strArray.str();
 }
 

@@ -177,7 +177,7 @@ void RenderImg::mousePressEvent(QMouseEvent *event)
 	glBegin(GL_POINTS);
 
 	unsigned int nbp = 0;// VOTRE CODE ICI : nombre de particules
-	for (int i = 0; i < nbp; i++ )
+    for (unsigned int i = 0; i < nbp; i++ )
 	{
 		// here get back position of each particle in ptPos
 //		glVertex2f(2.0f*ptPos[0]/m_widthTex-1.0f, -2.0f*ptPos[1]/m_heightTex+1.0f);

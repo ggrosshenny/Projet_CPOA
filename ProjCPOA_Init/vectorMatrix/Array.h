@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <type_traits>
 
 /**
  * Class Array <T, N>
