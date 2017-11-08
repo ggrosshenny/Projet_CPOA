@@ -98,10 +98,49 @@ int main()
     std::cout << "Test of swapData is Ok." << std::endl;
 
       // toString
+    testOperatorOutput = std::stringstream();
+    testString= std::stringstream();
+    testOperatorOutput << test.toString();
+    testString << "[" << test[0] << ", " << test[1] << ", " << test[2] << "]";
+    assert(testOperatorOutput.str() == testString.str());
+    std::cout << "Test of toString is Ok." << std::endl;
 
+    std::cout << "End of Array test" << std::endl;
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Begin Dynamic Array test" << std::endl;
 
+    // ----------------
+    // Constructor test
+
+      // Default constructor
+    DynamicArray<double> testDefaultDa;
+    assert(testDefaultDa.getPtr() == NULL);
+    std::cout << "Default constructor is Ok." << std::endl;
+
+      // Constructor with size as argument
+    DynamicArray<double> testda2(2);
+    std::cout << "Constructor with size of the array is Ok." << std::endl;
+
+      // Braced enclosed constructor
     DynamicArray<double> testda = {2.0, 3.0, 4.0, 5.0};
-    DynamicArray<double> testda2 = {0.0, 0.0};
+    assert(testda[0]==2.0);
+    assert(testda[1]==3.0);
+    assert(testda[2]==4.0);
+    assert(testda[3]==5.0);
+    std::cout << "Braced-enclosed constructor is Ok." << std::endl;
+
+    // -----------------
+    // Auxiliary methods
+
+      // toString
+    testOperatorOutput = std::stringstream();
+    testString= std::stringstream();
+    testOperatorOutput << testda.toString();
+    testString << "[" << testda[0] << ", " << testda[1] << ", " << testda[2] << ", " << testda[3] << "]";
+    assert(testOperatorOutput.str() == testString.str());
+    std::cout << "Test of toString is Ok." << std::endl;
+
+
     DynamicArray<unsigned char> testuc = {0, 1, 1, 0};
 
     testda2 = testda;

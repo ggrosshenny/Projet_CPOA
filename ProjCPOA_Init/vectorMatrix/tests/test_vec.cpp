@@ -87,6 +87,7 @@ int main()
     Vec3D cross = v1.cross(v2);
     Vec3D prodScal = scalar * v1;
     Vec3D prodScal2 = v2 * scalar;
+    //Vec3D v5 = v1 + v2;
 
     std::cout << "=====================================" << std::endl;
     std::cout << " Test with Vec3D" << std::endl;
