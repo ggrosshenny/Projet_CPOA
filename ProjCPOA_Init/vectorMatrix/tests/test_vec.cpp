@@ -1,148 +1,224 @@
 #include <iostream>
 #include "ProjectVectors.hpp"
+#include <cassert>
+#include <type_traits>
 
 int main()
 {
+    // =====
+    // ProjectVector
 
-    // Vec2I
+    std::cout << "======================" << std::endl;
+    std::cout << "Tests of ProjectVector" << std::endl;
 
-    Vec2I v2i1 = {1, 2, 3};
-    Vec2I v2i2 = {4, 5, 6};
-    Vec2I v2i3 = {4};
-    Vec2I v2i4 = {4, 5, 6, 7};
-    int scalar2i = 2;
-    int dot2i = v2i1 * v2i2;
-    int cross2i = v2i1.cross(v2i2);
-    Vec2I prodScal2i = scalar2i * v2i1;
-    Vec2I prodScal2i2 = v2i2 * scalar2i;
+    // -----------------
+    // Test Constructors
 
-    std::cout << "=====================================" << std::endl;
-    std::cout << " Test with Vec2I" << std::endl;
-    std::cout << "v1 : " << v2i1 << std::endl;
-    std::cout << "v2 : " << v2i2 << std::endl;
-    std::cout << "v3 : " << v2i3 << std::endl;
-    std::cout << "v4 : " << v2i4 << std::endl;
-    std::cout << "2.0 * v1 = " << prodScal2i << std::endl;
-    std::cout << "v2 * 2.0 = " << prodScal2i2 << std::endl;
-    std::cout << "v1 * v2 = " << dot2i << std::endl;
-    std::cout << "v1 ^ v2 = " << cross2i << std::endl;
+      // Default constructor
+    ProjectVector<int, 2> pv2De;
+    assert(pv2De[0]==0);
+    assert(pv2De[1]==0);
+    std::cout << "Default constructor is Ok." << std::endl;
 
+      // Brace-enclosed
+    ProjectVector<int, 2> pv2Be = {0, 5};
+    assert(pv2Be[0]==0);
+    assert(pv2Be[1]==5);
+    std::cout << "Brace-enclosed constructor with right number of arguments is Ok." << std::endl;
 
-    // Vec2D
-
-    Vec2D v2d1 = {1.0, 2.0};
-    Vec2D v2d2 = {4.0, 5.0};
-    Vec2D v2d3 = {4.0};
-    Vec2D v2d4 = {4.0, 5.0, 6.0, 7.0};
-    double scalar2d = 2;
-    double dot2d = v2d1 * v2d2;
-    double cross2d = v2d1.cross(v2d2);
-    Vec2D prodScal2d = scalar2d * v2d1;
-    Vec2D prodScal2d2 = v2d2 * scalar2d;
-
-    std::cout << "=====================================" << std::endl;
-    std::cout << " Test with Vec2D" << std::endl;
-    std::cout << "v1 : " << v2d1 << std::endl;
-    std::cout << "v2 : " << v2d2 << std::endl;
-    std::cout << "v3 : " << v2d3 << std::endl;
-    std::cout << "v4 : " << v2d4 << std::endl;
-    std::cout << "2.0 * v1 = " << prodScal2d << std::endl;
-    std::cout << "v2 * 2.0 = " << prodScal2d2 << std::endl;
-    std::cout << "v1 * v2 = " << dot2d << std::endl;
-    std::cout << "v1 ^ v2 = " << cross2d << std::endl;
+      // Brace-enclosed with more arguments and less arguments than needed has already been tested in Array_test
 
 
-    // Vec3I
+    // -----------------
+    // Auxiliary methods
 
-    Vec3I v3i1 = {1, 2, 3};
-    Vec3I v3i2 = {4, 5, 6};
-    Vec3I v3i3 = {4};
-    Vec3I v3i4 = {4,5,6,7};
-    int scalar3i = 2;
-    int dot3i = v3i1 * v3i2;
-    Vec3I cross3i = v3i1.cross(v3i2);
-    Vec3I prodScal3i = scalar3i * v3i1;
-    Vec3I prodScal3i2 = v3i2 * scalar3i;
+      // Norm
+    int nrm = pv2Be.norm();
+    assert(nrm == 5);
+    std::cout << "Test of the norm method is Ok." << std::endl;
 
-    std::cout << "=====================================" << std::endl;
-    std::cout << " Test with Vec3I" << std::endl;
-    std::cout << "v1 : " << v3i1 << std::endl;
-    std::cout << "v2 : " << v3i2 << std::endl;
-    std::cout << "v3 : " << v3i3 << std::endl;
-    std::cout << "v4 : " << v3i4 << std::endl;
-    std::cout << "2.0 * v1 = " << prodScal3i << std::endl;
-    std::cout << "v2 * 2.0 = " << prodScal3i2 << std::endl;
-    std::cout << "v1 * v2 = " << dot3i << std::endl;
-    std::cout << "v1 ^ v2 = " << cross3i << std::endl;
+    // --------------------------
+    // Operators with two vectors
+
+      // operator +
+    ProjectVector<int, 2> v2Add = {1,1};
+    ProjectVector<int, 2> plusVector = pv2Be + v2Add;
+    std::cout << plusVector << std::endl;
+    assert(plusVector[0] == 1);
+    assert(plusVector[1] == 6);
+    std::cout << "Test of operator + is Ok." << std::endl;
+
+      // operator -
+    ProjectVector<int, 2> minusVector = pv2Be - v2Add;
+    assert(minusVector[0] == -1);
+    assert(minusVector[1] == 4);
+    std::cout << "Test of operator - is Ok." << std::endl;
+
+      // operator +=
+    ProjectVector<int, 2> plusEglVector;
+    plusEglVector += v2Add;
+    assert(plusEglVector[0] == 1);
+    assert(plusEglVector[1] == 1);
+    std::cout << "Test of operator += is Ok." << std::endl;
+
+      // operator -=
+    ProjectVector<int, 2> minusEglVector;
+    minusEglVector -= v2Add;
+    assert(minusEglVector[0] == -1);
+    assert(minusEglVector[1] == -1);
+    std::cout << "Test of operator -= is Ok." << std::endl;
+
+      // Operator =
+    minusEglVector = plusEglVector;
+    assert(minusEglVector[0] == plusEglVector[0]);
+    assert(minusEglVector[1] == plusEglVector[1]);
+    std::cout << "Test of operator = is Ok." << std::endl;
+
+      // Scalar product
+    int scalProd = minusEglVector * plusEglVector;
+    assert(scalProd == 2);
+    std::cout << "Test of the scalar product is Ok." << std::endl;
+
+    // ------------------------------------
+    // Operators with a vector and a scalar
+
+      // Vector * scalar
+    minusEglVector = minusEglVector * 2;
+    assert(minusEglVector[0] == 2);
+    assert(minusEglVector[1] == 2);
+    std::cout << "Test of vector * scalar is Ok." << std::endl;
+
+      // Scalar * vector
+    minusEglVector = 2 * minusEglVector;
+    assert(minusEglVector[0] == 4);
+    assert(minusEglVector[1] == 4);
+    std::cout << "Test of scalar * vector is Ok." << std::endl;
+
+      // vector / scalar
+    minusEglVector = minusEglVector / 2;
+    assert(minusEglVector[0] == 2);
+    assert(minusEglVector[1] == 2);
+    std::cout << "Test of vector / scalar is Ok." << std::endl;
+
+      // vector *= scalar
+    minusEglVector *= 2;
+    assert(minusEglVector[0] == 4);
+    assert(minusEglVector[1] == 4);
+    std::cout << "Test of scalar *= vector is Ok." << std::endl;
+
+      // vector /= scalar
+    minusEglVector /= 2;
+    assert(minusEglVector[0] == 2);
+    assert(minusEglVector[1] == 2);
+    std::cout << "Test of vector /= scalar is Ok." << std::endl;
 
 
-    // Vec3D
+    // =====
+    // Vec2T
 
-    Vec3D v1 = {1.0, 2.0, 3.0};
-    Vec3D v2 = {4.0, 5.0, 6.0};
-    Vec3D v3 = {4.0};
-    Vec3D v4 = {4.0,5.0,6.0,7.0};
-    double scalar = 2.0;
-    double dot = v1 * v2;
-    Vec3D cross = v1.cross(v2);
-    Vec3D prodScal = scalar * v1;
-    Vec3D prodScal2 = v2 * scalar;
-    //Vec3D v5 = v1 + v2;
+    std::cout << "==============" << std::endl;
+    std::cout << "Tests of Vec2T" << std::endl;
 
-    std::cout << "=====================================" << std::endl;
-    std::cout << " Test with Vec3D" << std::endl;
-    std::cout << "v1 : " << v1 << std::endl;
-    std::cout << "v2 : " << v2 << std::endl;
-    std::cout << "v3 : " << v3 << std::endl;
-    std::cout << "v4 : " << v4 << std::endl;
-    std::cout << "2.0 * v1 = " << prodScal << std::endl;
-    std::cout << "v2 * 2.0 = " << prodScal2 << std::endl;
-    std::cout << "v1 * v2 = " << dot << std::endl;
-    std::cout << "v1 ^ v2 = " << cross << std::endl;
+    // -----------------
+    // Test Constructors
+
+      // Default constructor
+    Vec2T<int> v2De;
+    assert(v2De[0]==0);
+    assert(v2De[1]==0);
+    std::cout << "Default constructor is Ok." << std::endl;
+
+      // Brace-enclosed
+    Vec2T<int> v2Be = {0, 5};
+    assert(v2Be[0]==0);
+    assert(v2Be[1]==5);
+    std::cout << "Braced-enclosed constructor with right number of arguments is Ok." << std::endl;
+
+    // -------
+    // Methods
+
+      // cross
+    Vec2T<int> tempV2 = {1,5};
+    Vec2T<int> temp2V2 = {5,0};
+    int crss = temp2V2.cross(tempV2);
+    assert(crss == 25);
+    std::cout << "Test of the cross product is Ok." << std::endl;
 
 
+    // =====
+    // Vec3T
+
+    std::cout << "==============" << std::endl;
+    std::cout << "Tests of Vec3T" << std::endl;
+
+    // -----------------
+    // Test Constructors
+
+      // Default constructor
+    Vec3T<int> v3De;
+    assert(v3De[0]==0);
+    assert(v3De[1]==0);
+    assert(v3De[2]==0);
+    std::cout << "Default constructor is Ok." << std::endl;
+
+      // Brace-enclosed
+    Vec3T<int> v3Be = {1, 2, 3};
+    assert(v3Be[0]==1);
+    assert(v3Be[1]==2);
+    assert(v3Be[2]==3);
+    std::cout << "Braced-enclosed constructor with right number of arguments is Ok." << std::endl;
+
+    // -------
+    // Methods
+
+      // cross
+    Vec3T<int> crssVec3 = {3,2,1};
+    Vec3T<int> crss3 = crssVec3.cross(v3Be);
+    assert(crss3[0] == 4);
+    assert(crss3[1] == -8);
+    assert(crss3[2] == 4);
+    std::cout << "Test of the cross product is Ok." << std::endl;
+
+
+    // -----
     // Vec4I
+
+    std::cout << "==============" << std::endl;
+    std::cout << "Tests of Vec4I" << std::endl;
+
+    Vec4I v4iDe;
+    assert(v4iDe[0] == 0);
+    assert(v4iDe[1] == 0);
+    assert(v4iDe[2] == 0);
+    assert(v4iDe[3] == 0);
+    std::cout << "Test of default constructor is Ok." << std::endl;
 
     Vec4I v4i1 = {1, 2, 3, 4};
-    Vec4I v4i2 = {4, 5, 6, 7};
-    Vec4I v4i3 = {4};
-    Vec4I v4i4 = {4,5,6,7,8};
-    int scalar4i = 2;
-    int dot4i = v4i1 * v4i2;
-    Vec4I prodScal4i = scalar4i * v4i1;
-    Vec4I prodScal4i2 = v4i2 * scalar4i;
-
-    std::cout << "=====================================" << std::endl;
-    std::cout << " Test with Vec4I" << std::endl;
-    std::cout << "v1 : " << v4i1 << std::endl;
-    std::cout << "v2 : " << v4i2 << std::endl;
-    std::cout << "v3 : " << v4i3 << std::endl;
-    std::cout << "v4 : " << v4i4 << std::endl;
-    std::cout << "2.0 * v1 = " << prodScal4i << std::endl;
-    std::cout << "v2 * 2.0 = " << prodScal4i2 << std::endl;
-    std::cout << "v1 * v2 = " << dot4i << std::endl;
+    assert(v4i1[0] == 1);
+    assert(v4i1[1] == 2);
+    assert(v4i1[2] == 3);
+    assert(v4i1[3] == 4);
+    std::cout << "Test of brace-enclosed constructor is Ok." << std::endl;
 
 
-    // Vec4I
+    // -----
+    // Vec4D
+    std::cout << "==============" << std::endl;
+    std::cout << "Tests of Vec4D" << std::endl;
+
+    Vec4D v4dDe;
+    assert(v4dDe[0] == 0);
+    assert(v4dDe[1] == 0);
+    assert(v4dDe[2] == 0);
+    assert(v4dDe[3] == 0);
+    std::cout << "Test of default constructor is Ok." << std::endl;
 
     Vec4D v4d1 = {1.0, 2.0, 3.0, 4.0};
-    Vec4D v4d2 = {4.0, 5.0, 6.0, 7.0};
-    Vec4D v4d3 = {4.0};
-    Vec4D v4d4 = {4.0,5.0,6.0,7.0,8.0};
-    double scalar4d = 2.0;
-    double dot4d = v4d1 * v4d2;
-    Vec4D prodScal4d = scalar4d * v4d1;
-    Vec4D prodScal4d2 = v4d2 * scalar4d;
-
-    std::cout << "=====================================" << std::endl;
-    std::cout << " Test with Vec4D" << std::endl;
-    std::cout << "v1 : " << v4d1 << std::endl;
-    std::cout << "v2 : " << v4d2 << std::endl;
-    std::cout << "v3 : " << v4d3 << std::endl;
-    std::cout << "v4 : " << v4d4 << std::endl;
-    std::cout << "2.0 * v1 = " << prodScal4d << std::endl;
-    std::cout << "v2 * 2.0 = " << prodScal4d2 << std::endl;
-    std::cout << "v1 * v2 = " << dot4d << std::endl;
+    assert(v4d1[0] == 1.0);
+    assert(v4d1[1] == 2.0);
+    assert(v4d1[2] == 3.0);
+    assert(v4d1[3] == 4.0);
+    std::cout << "Test of brace-enclosed constructor is Ok." << std::endl;
 
 	return 0;
 }

@@ -18,3 +18,19 @@ target_include_directories(test_img2DGrey PRIVATE
 
 target_link_libraries(test_img2DGrey image )
 
+add_executable(test_imgGradient test_imgGradient.cpp)
+
+target_include_directories(test_imgGradient PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/..)
+
+target_link_libraries(test_imgGradient image )
+
+add_executable(test_img2RGB test_img2RGB.cpp)
+
+target_include_directories(test_img2RGB PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/..)
+
+target_link_libraries(test_img2RGB image )
+

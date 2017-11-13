@@ -39,6 +39,15 @@ public:
 public:
 
 
+    /**
+     * @brief applySmoothOnPixel Apply the smooth matrix of the given size on the given pixel of the given image
+     * @param pi i coordinate of pixel
+     * @param pj j coordinate of pixel
+     * @param img image of the pixel
+     */
+    void applySmoothOnPixel(unsigned int pi, unsigned int pj, Img2DGrey& img, unsigned int neighboorSize) const;
+
+
 
 // Image transformations methods
 public:
@@ -55,14 +64,14 @@ public:
      * @brief saveImageToPGMFile save the image to PGM format in the file with the given file name
      * @param fileName file to write into
      */
-    void saveImageToPGMFile(std::string fileName);
+    void saveImageToPGMFile(std::string fileName) const;
 
 
     /**
      * @brief subTileImage return a subtile image
      * @return
      */
-    Img2DGrey subTileImage();
+    Img2DGrey subTileImage() const;
 
 
     /**
@@ -70,7 +79,7 @@ public:
      * @param treshold
      * @return
      */
-    Img2DGrey tresholding(unsigned char treshold);
+    Img2DGrey tresholding(unsigned int treshold) const;
 
 
     /**
@@ -78,7 +87,7 @@ public:
      * @param neighboorSize
      * @return
      */
-    Img2DGrey smooth(int neighboorSize);
+    Img2DGrey smooth(unsigned int neighboorSize) const;
 
 };
 

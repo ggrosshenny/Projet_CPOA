@@ -138,20 +138,45 @@ int main()
     testOperatorOutput << testda.toString();
     testString << "[" << testda[0] << ", " << testda[1] << ", " << testda[2] << ", " << testda[3] << "]";
     assert(testOperatorOutput.str() == testString.str());
-    std::cout << "Test of toString is Ok." << std::endl;
+    std::cout << "Test of general toString is Ok." << std::endl;
 
-
+      // Test of the unsigned char toString method
     DynamicArray<unsigned char> testuc = {0, 1, 1, 0};
+    testOperatorOutput = std::stringstream();
+    testString= std::stringstream();
+    testOperatorOutput << testda.toString();
+    testString << "[" << (int)testda[0] << ", " << (int)testda[1] << ", " << (int)testda[2] << ", " << (int)testda[3] << "]";
+    assert(testOperatorOutput.str() == testString.str());
+    std::cout << "Test of specialized toString is Ok." << std::endl;
 
-    testda2 = testda;
+      // Test of size methods
+    assert(testda.size() == 4);
+    std::cout << "Test of size methods is Ok." << std::endl;
 
-    double dbl = testda[0];
-    double dbl2 = testda2[0];
+      // Test of getPtr()
+    double* testGetPtr = testda.getPtr();
+    assert(testGetPtr[0] == testda[0]);
+    assert(testGetPtr[1] == testda[1]);
+    assert(testGetPtr[2] == testda[2]);
+    assert(testGetPtr[3] == testda[3]);
+    std::cout << "Test of getptr() methods is Ok." << std::endl;
 
-    std::cout << "testda : " << testda << std::endl;
-    std::cout << "testuc : " << testuc << std::endl;
-    std::cout << "testda[0] : " << dbl << std::endl;
-    std::cout << "testda2[0] : " << dbl2 << std::endl;
+
+    // ------------------
+    // Operators overload
+
+      // Test of operator [] (set)
+    testda[0] = 1.0f;
+    assert(testda[0]==1.0f);
+      // Test of operator [] (get)
+    assert(testda[1] == 3.0f);
+    std::cout << "Test of operator [] is Ok." << std::endl;
+
+      // Test of operator =
+    testda = testda2;
+    assert(testda[0]==testda2[0]);
+    assert(testda[1]==testda2[1]);
+    std::cout << "Test of operator = is Ok." << std::endl;
 
     return 0;
 }

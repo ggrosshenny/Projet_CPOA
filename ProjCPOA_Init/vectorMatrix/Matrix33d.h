@@ -70,14 +70,6 @@ public:
 
 
     /**
-     * @brief operator * overload for multiplication with a Vec3D
-     * @param rightHandObj
-     * @return
-     */
-    Matrix33D operator*(const Vec3D& rightHandObj);
-
-
-    /**
      * @brief operator * overload for multiplication with a scalar
      * @param scalar
      * @return
@@ -181,7 +173,7 @@ public:
 
     Vec2D operator*(Vec2D& vector);
 
-    void applyTransformation(double& x, double& y);
+    Vec2D applyTransformation(double& x, double& y);
 };
 
 // External operator from class

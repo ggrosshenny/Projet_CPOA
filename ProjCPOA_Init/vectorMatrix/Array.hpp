@@ -205,7 +205,9 @@ std::string DynamicArray<T>::toString()
 
     for(i=0; i<(this->nb_elements-1); i++)
     {
-        if ((std::is_same<T, unsigned char>::value) || (std::is_same<T, char>::value))
+        bool b2;
+        bool b;
+        if (( b = std::is_same<T, unsigned char>::value == 1) || (b2 = std::is_same<T, char>::value == 1))
         {
             strArray << (int)this->data[i] << ", ";
         }

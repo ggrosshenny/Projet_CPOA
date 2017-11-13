@@ -26,8 +26,8 @@ public:
 
     /**
      * @brief Img2D constructor with arguments. Dynamic allocation of an image of x * y pixels
-     * @param x width of the image
-     * @param y height of the image
+     * @param height0 height of the image
+     * @param width0 width of the image
      */
     Img2D(int height0, int width0);
 
@@ -48,14 +48,14 @@ public:
      * @brief getHeight return the height of the image
      * @return
      */
-    T getHeight();
+    unsigned int getHeight()const;
 
 
     /**
      * @brief getWidth return the width of the image
      * @return
      */
-    T getWidth();
+    unsigned int getWidth() const;
 
 
     /**
@@ -119,9 +119,9 @@ public:
      * @return
      */
     Img2D<T> cropping(unsigned int ratio_height, unsigned int ratio_width);
-
-
 };
+
+#include "Img2D.hpp"
 
 
 

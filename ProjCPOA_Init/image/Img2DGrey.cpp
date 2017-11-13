@@ -74,7 +74,7 @@ void Img2DGrey::loadImageFromPGMFile(std::string fileName)
             // Set the offset to the beginning of the line
             readLineStringStream.seekg(0, readLineStringStream.beg);
             // Get height and width
-            readLineStringStream >> loadedImageHeight >> loadedImageWidth;
+            readLineStringStream >> loadedImageWidth >> loadedImageHeight;
             continueReading = false;
         }
     }
@@ -115,7 +115,7 @@ void Img2DGrey::loadImageFromPGMFile(std::string fileName)
 }
 
 
-void Img2DGrey::saveImageToPGMFile(std::string fileName)
+void Img2DGrey::saveImageToPGMFile(std::string fileName) const
 {
 
     std::ofstream pgmFile;
@@ -136,7 +136,7 @@ void Img2DGrey::saveImageToPGMFile(std::string fileName)
     // Create the header of the pgm file
     pgmFile << "P2" << std::endl;
     pgmFile << "# Image auto-saved to PGM format" << std::endl;
-    pgmFile << this->height << this->width << std::endl;
+    pgmFile << this->width << " " << this->height << std::endl;
     pgmFile << "255" << std::endl;
 
     // Create the matrix data
@@ -144,8 +144,180 @@ void Img2DGrey::saveImageToPGMFile(std::string fileName)
     {
         for(unsigned int j = 0; j<this->width-1; j++)
         {
-            pgmFile << this->data[i][j] << " ";
+            pgmFile << (unsigned int)this->data[i][j] << " ";
         }
-        pgmFile << this->data[i][this->width-1] << std::endl;
+        pgmFile << (unsigned int)this->data[i][this->width-1] << std::endl;
     }
 }
+
+
+Img2DGrey Img2DGrey::tresholding(unsigned int treshold) const
+{
+    unsigned int i = 0;
+    unsigned int j = 0;
+
+    Img2DGrey answ(this->height, this->width);
+
+    for(i=0; i<this->height; i++)
+    {
+        for(j=0; j<this->width; j++)
+        {
+            if((unsigned int)this->data[i][j] < treshold)
+            {
+                answ[i][j] = 0;
+            }
+            else
+            {
+                answ[i][j] = 255;
+            }
+        }
+    }
+
+    return answ;
+}
+
+
+void Img2DGrey::applySmoothOnPixel(unsigned int pi, unsigned int pj, Img2DGrey& img, unsigned int neighboorSize) const
+{
+    int tempiInf = 0;
+    int tempjInf = 0;
+    unsigned int tempiSup = 0;
+    unsigned int tempjSup = 0;
+
+    for(unsigned int i=0; i<=neighboorSize; i++)
+    {
+        for(unsigned int j=0; j<=neighboorSize; j++)
+        {
+            tempiInf = pi - i;
+            tempjInf = pj - i;
+            tempiSup = pi + i;
+            tempjSup = pj + j;
+            // If the neighboor is on the top side out of the image
+            if(tempiInf < 0)
+            {
+                // If the neighboor is on the left side out of the image
+                if(tempjInf < 0)
+                {
+                    img[pi][pj] += this->data[pi+i][pj+j] * 4;
+                }
+                // If the neighboor is on the right side out of the image
+                else if(tempjSup >= this->width)
+                {
+                    img[pi][pj] += this->data[pi+i][pj-j] * 4;
+                }
+                // If the neighboor is inside the image on horizontal coordinate
+                else
+                {
+                    img[pi][pj] += this->data[pi+i][pj+j] * 2;
+                    img[pi][pj] += this->data[pi+i][pj-j] * 2;
+                }
+            }
+            // If the neighboor is on the bottom side out of the image
+            else if(tempiSup >= this->height)
+            {
+                // If the neighboor is on the left side out of the image
+                if(tempjInf < 0)
+                {
+                    img[pi][pj] += this->data[pi-i][pj+j] * 4;
+                }
+                // If the neighboor is on the right side out of the image
+                else if(tempjSup >= this->width)
+                {
+                    img[pi][pj] += this->data[pi-i][pj-j] * 4;
+                }
+                // If the neighboor is inside the image on horizontal coordinate
+                else
+                {
+                    img[pi][pj] += this->data[pi-i][pj+j] * 2;
+                    img[pi][pj] += this->data[pi-i][pj-j] * 2;
+                }
+            }
+            // If the neighboor is inside the image on vertical coordinate
+            else
+            {
+                // If the neighboor is on the left side out of the image
+                if(tempjInf < 0)
+                {
+                    img[pi][pj] += this->data[pi+i][pj+j] * 2;
+                    img[pi][pj] += this->data[pi-i][pj+j] * 2;
+                }
+                // If the neighboor is on the right side out of the image
+                else if(tempjSup >= this->width)
+                {
+                    img[pi][pj] += this->data[pi+i][pj-j] * 2;
+                    img[pi][pj] += this->data[pi-i][pj-j] * 2;
+                }
+                // If the neighboor is inside the image
+                else
+                {
+                    img[pi][pj] += this->data[pi+i][pj+j];
+                    img[pi][pj] += this->data[pi+i][pj-j];
+                    img[pi][pj] += this->data[pi-i][pj+j];
+                    img[pi][pj] += this->data[pi-i][pj-j];
+                }
+            }
+        }
+    }
+    img[pi][pj] = (int)img[pi][pj] / std::pow((2*neighboorSize + 1),2);
+    //std::cout << "Img[" << pi << "][" << pj << "] = " << (int)img[pi][pj] << std::endl;
+}
+
+
+Img2DGrey Img2DGrey::smooth(unsigned int neighboorSize) const
+{
+    Img2DGrey answ(this->height, this->width);
+    for(unsigned int i = 0; i<this->height; i++)
+    {
+        for(unsigned int j = 0; j<this->width; j++)
+        {
+            applySmoothOnPixel(i, j, answ, neighboorSize);
+        }
+    }
+    return answ;
+}
+
+
+Img2DGrey Img2DGrey::subTileImage() const
+{
+    int newPixelValue = 0;
+    unsigned int newHeight = this->height/2;
+    unsigned int newWidth = this->width/2;
+    unsigned int i_shift = 0;
+    unsigned int j_shift = 0;
+
+    Img2DGrey answ(newHeight, newWidth);
+
+    for(unsigned int i = 0; i<newHeight; i++)
+    {
+        for(unsigned int j = 0; j<newWidth; j++)
+        {
+            // Compute the mean of the group of pixels that compose the sub-tile image pixel
+            // (i.e : newImage[i][j] = (2*2) pixels in image)
+            newPixelValue = this->data[i_shift][j_shift];
+            newPixelValue += this->data[i_shift][j_shift+1];
+            newPixelValue += this->data[i_shift+1][j_shift];
+            newPixelValue += this->data[i_shift+1][j_shift+1];
+
+            answ[i][j] = newPixelValue / 4;
+
+            j_shift += 2;
+        }
+        i_shift += 2;
+        j_shift = 0;
+    }
+
+    return answ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

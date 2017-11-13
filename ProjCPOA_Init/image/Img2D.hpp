@@ -98,14 +98,14 @@ Img2D<T>::~Img2D()
 
 
 template<typename T>
-T Img2D<T>::getHeight()
+unsigned int Img2D<T>::getHeight() const
 {
     return this->height;
 }
 
 
 template<typename T>
-T Img2D<T>::getWidth()
+unsigned int Img2D<T>::getWidth() const
 {
     return this->width;
 }
@@ -130,15 +130,17 @@ std::string Img2D<T>::toString()
 template<typename T>
 void Img2D<T>::reduceRatio(unsigned int *ratio_height, unsigned int *ratio_width)
 {
+    bool continueComputation = true;
     unsigned int gcd = std::min(*ratio_height, *ratio_width);
 
-    while(gcd != 1)
+    while((gcd != 1) && (continueComputation))
     {
-        if((*ratio_height % gcd == 0) && (*ratio_width % gcd == 0))
+        if(((*ratio_height % gcd) == 0) && ((*ratio_width % gcd) == 0))
         {
             *ratio_height = *ratio_height / gcd;
             *ratio_width = *ratio_width / gcd;
             gcd =std::min(*ratio_height, *ratio_width);
+            continueComputation = false;
         }
         else
         {

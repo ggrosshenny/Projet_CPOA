@@ -35,6 +35,8 @@ Matrix33D::Matrix33D(std::initializer_list<std::initializer_list<double>> elemen
         }
     }
 
+    this->data[2][2] = 1.0;
+
     i=0;
     j=0;
 
@@ -122,29 +124,6 @@ Matrix33D Matrix33D::operator*(const Matrix33D& rightHandObj)
 }
 
 
-Matrix33D Matrix33D::operator*(const Vec3D& rightHandObj)
-{
-    int i = 0;
-    int j = 0;
-    int k = 0;
-
-    Matrix33D answ;
-
-    for(i=0; i<3; i++)
-    {
-        for(j=0; j<3; j++)
-        {
-            for(k=0; k<3; k++)
-            {
-                answ[i][j] = this->data[i][k] * rightHandObj[k];
-            }
-        }
-    }
-
-    return answ;
-}
-
-
 Matrix33D Matrix33D::operator*(const double& scalar)
 {
     Matrix33D answ;
@@ -182,23 +161,25 @@ Matrix33D Matrix33D::inverse()
                - this->data[0][0] * this->data[1][2] * this->data[2][1]
                - this->data[0][1] * this->data[1][0] * this->data[2][2];
 
+    std::cout << det << std::endl;
+
     if(det == 0.0)
     {
         std::cout << "WARNING: det = " << det << " ! Cannot invert matrix" << std::endl;
         exit(1);
     }
     else
-    {
+    {   
         answ[0][0] = (this->data[1][1]*this->data[2][2] - this->data[1][2]*this->data[2][1])/det;
-        answ[1][0] = (this->data[1][0]*this->data[2][2] - this->data[2][0]*this->data[1][2])/det;
+        answ[1][0] = (this->data[2][0]*this->data[1][2] - this->data[1][0]*this->data[2][2])/det;
         answ[2][0] = (this->data[1][0]*this->data[2][1] - this->data[2][0]*this->data[1][1])/det;
 
-        answ[0][1] = (this->data[0][1]*this->data[2][2] - this->data[2][1]*this->data[0][2])/det;
+        answ[0][1] = (this->data[2][1]*this->data[0][2] - this->data[0][1]*this->data[2][2])/det;
         answ[1][1] = (this->data[0][0]*this->data[2][2] - this->data[2][0]*this->data[0][2])/det;
-        answ[2][1] = (this->data[0][0]*this->data[2][1] - this->data[2][0]*this->data[0][1])/det;
+        answ[2][1] = (this->data[2][0]*this->data[0][1] - this->data[0][0]*this->data[2][1])/det;
 
         answ[0][2] = (this->data[0][1]*this->data[1][2] - this->data[1][1]*this->data[0][2])/det;
-        answ[1][2] = (this->data[0][0]*this->data[1][2] - this->data[1][0]*this->data[0][2])/det;
+        answ[1][2] = (this->data[1][0]*this->data[0][2] - this->data[0][0]*this->data[1][2])/det;
         answ[2][2] = (this->data[0][0]*this->data[1][1] - this->data[1][0]*this->data[0][1])/det;
     }
 
@@ -242,7 +223,7 @@ Matrix33D Matrix33D::scale(double hx, double hy)
 
 Matrix33D& Matrix33D::translate(Matrix33D &translateMatrix)
 {
-    *this = *this * translateMatrix ;
+    *this = translateMatrix * *this ;
     return *this;
 }
 
@@ -316,7 +297,7 @@ Vec2D Matrix33D::operator *(Vec2D& vector)
 }
 
 
-void Matrix33D::applyTransformation(double& x, double& y)
+Vec2D Matrix33D::applyTransformation(double& x, double& y)
 {
 
     Vec2D vector2D = {x, y};
@@ -326,4 +307,7 @@ void Matrix33D::applyTransformation(double& x, double& y)
     x = vector2D[0];
     y = vector2D[1];
 
+    vector2D = {x,y};
+
+    return vector2D;
 }

@@ -1,7 +1,7 @@
 #ifndef __PROJECTVECTORS_H_
 #define __PROJECTVECTORS_H_
 
-#include "Array.hpp"
+#include "Array.h"
 
 /**
  * @brief The ProjectVector class
@@ -30,12 +30,12 @@ public:
      * @brief norm return the norm of the vector
      * @return
      */
-    T& norm();
+    T norm();
 
 
 // Operators overload
 public:
-    // Operators with two vectors (+, -, +=, -=)
+    // Operators with two vectors (+, -, +=, -=, =)
 
     /**
      * @brief operator + overload of the addition operator with two vectors
@@ -43,7 +43,7 @@ public:
      * @param rightHandObj right hand object of the operation
      * @return
      */
-    ProjectVector<T,N>& operator+(const ProjectVector<T,N>& rightHandObj);
+    ProjectVector<T,N> operator+(const ProjectVector<T,N>& rightHandObj);
 
 
     /**
@@ -52,7 +52,7 @@ public:
      * @param rightHandObj right hand object of the operation
      * @return
      */
-    ProjectVector<T,N>& operator-(const ProjectVector<T,N>& rightHandObj);
+    ProjectVector<T,N> operator-(const ProjectVector<T,N>& rightHandObj);
 
 
     /**
@@ -69,6 +69,14 @@ public:
      * @return
      */
     ProjectVector<T,N>& operator-=(const ProjectVector<T,N>& rightHandObj);
+
+
+    /**
+     * @brief operator = overload for = with two vectors
+     * @param other
+     * @return
+     */
+    ProjectVector<T,N>& operator=(const T& other);
 
 
     // Scalar product (*)
@@ -97,7 +105,7 @@ public:
      * @param scalar
      * @return
      */
-    ProjectVector<T,N>& operator/(const T& scalar);
+    ProjectVector<T,N> operator/(const T& scalar);
 
 
     /**
@@ -175,12 +183,6 @@ public:
     Vec3T(std::initializer_list<T> elements) : ProjectVector<T,3>(elements) {}
 
 public:
-    /**
-     * @brief norm return the norm of the vector
-     * @return
-     */
-    T& norm();
-
 
     /**
      * @brief cross return the cross product with the given vector
@@ -424,5 +426,7 @@ public:
      */
     Vec4D(std::initializer_list<double> elements) : ProjectVector<double,4>(elements) {}
 };
+
+#include "ProjectVectors.hpp"
 
 #endif

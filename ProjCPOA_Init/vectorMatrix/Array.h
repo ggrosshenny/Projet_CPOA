@@ -181,9 +181,8 @@ public:
      * @return
      */
     DynamicArray<T>& operator=(DynamicArray<T>& other);
-
-
-
 };
+
+#include "Array.hpp"
 
 #endif

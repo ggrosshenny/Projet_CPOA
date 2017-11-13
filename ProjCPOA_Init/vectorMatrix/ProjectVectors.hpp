@@ -30,9 +30,16 @@ ProjectVector<T,N>::ProjectVector(std::initializer_list<T> elems) : Array<T,N>(e
 
 
 template<typename T, int N>
-T& ProjectVector<T,N>::norm()
+T ProjectVector<T,N>::norm()
 {
-    return std::sqrt(*this * *this);
+    T answ = T(0);
+
+    for(int i=0; i<N; i++)
+    {
+        answ += std::pow(this->data[i], 2);
+    }
+
+    return std::sqrt(answ);
 }
 
 
@@ -41,7 +48,7 @@ T& ProjectVector<T,N>::norm()
 
 
 template<typename T, int N>
-ProjectVector<T,N>& ProjectVector<T,N>::operator+(const ProjectVector<T,N>& rightHandObj)
+ProjectVector<T,N> ProjectVector<T,N>::operator+(const ProjectVector<T,N>& rightHandObj)
 {
     ProjectVector<T,N> answ;
     int i = 0;
@@ -56,7 +63,7 @@ ProjectVector<T,N>& ProjectVector<T,N>::operator+(const ProjectVector<T,N>& righ
 
 
 template<typename T, int N>
-ProjectVector<T,N>& ProjectVector<T,N>::operator-(const ProjectVector<T,N>& rightHandObj)
+ProjectVector<T,N> ProjectVector<T,N>::operator-(const ProjectVector<T,N>& rightHandObj)
 {
     ProjectVector<T,N> answ;
     int i = 0;
@@ -95,6 +102,12 @@ ProjectVector<T,N>& ProjectVector<T,N>::operator-=(const ProjectVector<T,N>& rig
     }
 
     return *this;
+}
+
+template<typename T, int N>
+ProjectVector<T,N>& ProjectVector<T,N>::operator=(const T& other)
+{
+
 }
 
 
@@ -147,7 +160,7 @@ ProjectVector<T,N> operator*(const T& scalar, const ProjectVector<T,N>& vector)
 
 
 template<typename T, int N>
-ProjectVector<T,N>& ProjectVector<T,N>::operator/(const T& scalar)
+ProjectVector<T,N> ProjectVector<T,N>::operator/(const T& scalar)
 {
     ProjectVector<T,N> answ;
     int i = 0;
