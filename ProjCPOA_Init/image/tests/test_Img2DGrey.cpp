@@ -11,6 +11,9 @@ int main()
       // loadImageFromPGMFile
     Img2DGrey imgLoadTest;
     imgLoadTest.loadImageFromPGMFile("../../../TestsRessources/Images/test.pgm");
+
+    std::cout << imgLoadTest << std::endl;
+
     unsigned int i = 0;
     unsigned int j = 0;
     for(i=0; i<10; i++)

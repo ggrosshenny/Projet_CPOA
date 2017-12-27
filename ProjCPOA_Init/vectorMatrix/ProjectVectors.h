@@ -33,6 +33,7 @@ public:
     T norm();
 
 
+
 // Operators overload
 public:
     // Operators with two vectors (+, -, +=, -=, =)
@@ -147,6 +148,14 @@ public:
      */
     Vec2T() : ProjectVector<T,2>() {}
 
+
+    /**
+     * @brief Vec2T constructor with two arguments given.
+     * @param x
+     * @param y
+     */
+    Vec2T(double x, double y) : ProjectVector<T,2>() {this->data[0] = x; this->data[1] = y;}
+
     /**
      * @brief Vec2T constructor with brace-enclosed initilization. Initialize data members with given values or T{0} if unknown
      * @param elements
@@ -160,6 +169,25 @@ public:
      * @return
      */
     T cross(Vec2T<T>& other);
+
+    /**
+     * @brief x return the first element of the vector
+     * @return
+     */
+    T x() const
+    {
+        return this->data[0];
+    }
+
+
+    /**
+     * @brief y return the second element of the vector
+     * @return
+     */
+    T y() const
+    {
+        return this->data[1];
+    }
 };
 
 
@@ -190,132 +218,54 @@ public:
      * @return
      */
     Vec3T<T> cross(const Vec3T<T>& other);
+
+
+    /**
+     * @brief x return the first element of the vector
+     * @return
+     */
+    T x() const
+    {
+        return this->data[0];
+    }
+
+
+    /**
+     * @brief y return the second element of the vector
+     * @return
+     */
+    T y() const
+    {
+        return this->data[1];
+    }
+
+    /**
+     * @brief z return the third element of the vector
+     * @return
+     */
+    T z() const
+    {
+        return this->data[2];
+    }
 };
 
 
 /**
  * @brief The Vec2I class
  */
-class Vec2I : public Vec2T<int>
-{
-public:
-    /**
-     * @brief Vec2I constructor without arguments. Initialize all data members to 0
-     */
-    Vec2I() : Vec2T() {}
-
-
-    /**
-     * @brief Vec2I Constructor for cast from Vec2T<int> to Vec2I (used for usage of mother class methods)
-     * @param vec
-     */
-    Vec2I(Vec2T<int> vec) : Vec2T<int>()
-    {
-        data[0] = vec[0];
-        data[1] = vec[1];
-    }
-
-    /**
-     * @brief Vec2I Constructor for cast from ProjectVector<int, 2> to Vec2I (used for usage of mother class methods)
-     * @param vec
-     */
-    Vec2I(ProjectVector<int, 2> vec) : Vec2T<int>()
-    {
-        data[0] = vec[0];
-        data[1] = vec[1];
-    }
-
-
-    /**
-     * @brief Vec2I constructor with brace-enclosed initilization. Initialize data members with given values or 0 if unknown
-     * @param elements
-     */
-    Vec2I(std::initializer_list<int> elements) : Vec2T<int>(elements) {}
-};
+using Vec2I = Vec2T<int>;
 
 
 /**
  * @brief The Vec2D class
  */
-class Vec2D : public Vec2T<double>
-{
-public:
-    /**
-     * @brief Vec2D constructor without arguments. Initialize all data members to 0.0f
-     */
-    Vec2D() : Vec2T() {}
-
-
-    /**
-     * @brief Vec2D Constructor for cast from Vec2T<double> to Vec2D (used for usage of mother class methods)
-     * @param vec
-     */
-    Vec2D(Vec2T<double> vec) : Vec2T<double>()
-    {
-        data[0] = vec[0];
-        data[1] = vec[1];
-    }
-
-    /**
-     * @brief Vec2D Constructor for cast from ProjectVector<double, 2> to Vec2D (used for usage of mother class methods)
-     * @param vec
-     */
-    Vec2D(ProjectVector<double, 2> vec) : Vec2T<double>()
-    {
-        data[0] = vec[0];
-        data[1] = vec[1];
-    }
-
-
-    /**
-     * @brief Vec2D constructor with brace-enclosed initilization. Initialize data members with given values or 0.0f if unknown
-     * @param elements
-     */
-    Vec2D(std::initializer_list<double> elements) : Vec2T<double>(elements) {}
-};
+using Vec2D = Vec2T<double>;
 
 
 /**
  * @brief The Vec3I class
  */
-class Vec3I : public Vec3T<int>
-{
-public:
-    /**
-     * @brief Vec3I constructor without arguments. Initialize all data members to 0
-     */
-    Vec3I() : Vec3T() {}
-
-
-    /**
-     * @brief Vec3I Constructor for cast from Vec3T<int> to Vec3I (used for usage of mother class methods)
-     * @param vec
-     */
-    Vec3I(Vec3T<int> vec) : Vec3T<int>()
-    {
-        data[0] = vec[0];
-        data[1] = vec[1];
-        data[2] = vec[2];
-    }
-
-    /**
-     * @brief Vec3I Constructor for cast from ProjectVector<int, 3> to Vec3I (used for usage of mother class methods)
-     * @param vec
-     */
-    Vec3I(ProjectVector<int, 3> vec) : Vec3T<int>()
-    {
-        data[0] = vec[0];
-        data[1] = vec[1];
-        data[2] = vec[2];
-    }
-
-
-    /**
-     * @brief Vec3I constructor with brace-enclosed initilization. Initialize data members with given values or 0 if unknown
-     * @param elements
-     */
-    Vec3I(std::initializer_list<int> elements) : Vec3T<int>(elements) {}
-};
+using Vec3I = Vec3T<int>;
 
 
 /**
@@ -392,6 +342,43 @@ public:
      * @param elements
      */
     Vec4I(std::initializer_list<int> elements) : ProjectVector<int,4>(elements) {}
+
+    /**
+     * @brief x return the first element of the vector
+     * @return
+     */
+    int x() const
+    {
+        return this->data[0];
+    }
+
+
+    /**
+     * @brief y return the second element of the vector
+     * @return
+     */
+    int y() const
+    {
+        return this->data[1];
+    }
+
+    /**
+     * @brief z return the third element of the vector
+     * @return
+     */
+    int z() const
+    {
+        return this->data[2];
+    }
+
+    /**
+     * @brief w return the fourth element of the vector
+     * @return
+     */
+    int w() const
+    {
+        return this->data[3];
+    }
 };
 
 
@@ -425,6 +412,44 @@ public:
      * @param elements
      */
     Vec4D(std::initializer_list<double> elements) : ProjectVector<double,4>(elements) {}
+
+
+    /**
+     * @brief x return the first element of the vector
+     * @return
+     */
+    double x() const
+    {
+        return this->data[0];
+    }
+
+
+    /**
+     * @brief y return the second element of the vector
+     * @return
+     */
+    double y() const
+    {
+        return this->data[1];
+    }
+
+    /**
+     * @brief z return the third element of the vector
+     * @return
+     */
+    double z() const
+    {
+        return this->data[2];
+    }
+
+    /**
+     * @brief w return the fourth element of the vector
+     * @return
+     */
+    double w() const
+    {
+        return this->data[3];
+    }
 };
 
 #include "ProjectVectors.hpp"
