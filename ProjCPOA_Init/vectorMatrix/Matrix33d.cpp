@@ -136,6 +136,12 @@ Matrix33D Matrix33D::operator*(const double& scalar)
 }
 
 
+bool Matrix33D::operator==(const Matrix33D& other)
+{
+    return ((this->data[0] == other[0]) && (this->data[1] == other[1]) && (this->data[2] == other[2]));
+}
+
+
 // ---------------
 // transformations
 
@@ -160,8 +166,6 @@ Matrix33D Matrix33D::inverse()
                - this->data[0][2] * this->data[1][1] * this->data[2][0]
                - this->data[0][0] * this->data[1][2] * this->data[2][1]
                - this->data[0][1] * this->data[1][0] * this->data[2][2];
-
-    std::cout << det << std::endl;
 
     if(det == 0.0)
     {

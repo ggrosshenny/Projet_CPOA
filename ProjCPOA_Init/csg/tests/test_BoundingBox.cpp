@@ -5,35 +5,35 @@
 int main()
 {
     // Work space initialization
-    BoundingBox b1({0,0}, {10,10});
-    BoundingBox b2({5,5}, {12,12});
-    BoundingBox b3 = BoundingBox ({11, 11}, {12, 12});
+    BoundingBox b1({0,10}, {10,0});
+    BoundingBox b2({5,12}, {12,5});
+    BoundingBox b3 = BoundingBox ({11, 12}, {12, 11});
 
     // Test od union
     std::cout << "Test of union operation" << std::endl;
     BoundingBox unionBB = b1 + b2;
     assert(unionBB.getTopLeftCornerPoint().x() == 0);
-    assert(unionBB.getTopLeftCornerPoint().y() == 0);
+    assert(unionBB.getTopLeftCornerPoint().y() == 12);
     assert(unionBB.getBottomRightCornerPoint().x() == 12);
-    assert(unionBB.getBottomRightCornerPoint().y() == 12);
+    assert(unionBB.getBottomRightCornerPoint().y() == 0);
     std::cout << "Test of union operation passed" << std::endl;
 
     // Test of difference
     std::cout << "Test of difference operation" << std::endl;
     BoundingBox diffBB = b1 - b2;
     assert(diffBB.getTopLeftCornerPoint().x() == 0);
-    assert(diffBB.getTopLeftCornerPoint().y() == 0);
+    assert(diffBB.getTopLeftCornerPoint().y() == 10);
     assert(diffBB.getBottomRightCornerPoint().x() == 5);
-    assert(diffBB.getBottomRightCornerPoint().y() == 10);
+    assert(diffBB.getBottomRightCornerPoint().y() == 0);
     std::cout << "Test of difference operation passed" << std::endl;
 
     // Test of intersection
     std::cout << "Test of intersection operation" << std::endl;
     BoundingBox interBB = b1 ^ b2;
     assert(interBB.getTopLeftCornerPoint().x() == 5);
-    assert(interBB.getTopLeftCornerPoint().y() == 5);
+    assert(interBB.getTopLeftCornerPoint().y() == 10);
     assert(interBB.getBottomRightCornerPoint().x() == 10);
-    assert(interBB.getBottomRightCornerPoint().y() == 10);
+    assert(interBB.getBottomRightCornerPoint().y() == 5);
     assert(interBB.isEmpty() != true);
     std::cout << "Test of intersection operation passed" << std::endl;
 
@@ -61,9 +61,9 @@ int main()
     std::cout << "Test of method addpoint" << std::endl;
     b2.addPoint(p1);
     assert(b2.getTopLeftCornerPoint().x() == 2);
-    assert(b2.getTopLeftCornerPoint().y() == 2);
+    assert(b2.getTopLeftCornerPoint().y() == 12);
     assert(b2.getBottomRightCornerPoint().x() == 12);
-    assert(b2.getBottomRightCornerPoint().y() == 12);
+    assert(b2.getBottomRightCornerPoint().y() == 2);
     std::cout << "Test of method addPoint passed" << std::endl;
 
 

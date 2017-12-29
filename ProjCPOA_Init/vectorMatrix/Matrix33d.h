@@ -77,6 +77,14 @@ public:
     Matrix33D operator*(const double& scalar);
 
 
+    /**
+     * @brief operator == overload for the == operator
+     * @param other
+     * @return
+     */
+    bool operator==(const Matrix33D& other);
+
+
 // transformations
 public:
 

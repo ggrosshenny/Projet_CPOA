@@ -92,13 +92,14 @@ BoundingBox BoundingBox::operator +(const BoundingBox &other) const
 
     Vec2D newTopLeftCornerPoint;
     newTopLeftCornerPoint[0] = std::min(thisTopLeftCornerPoint.x(), other.topLeftCornerPoint.x());
-    newTopLeftCornerPoint[1] = std::min(thisTopLeftCornerPoint.y(), other.topLeftCornerPoint.y()); // min because (0,0) in QT is the top left point
+    newTopLeftCornerPoint[1] = std::max(thisTopLeftCornerPoint.y(), other.topLeftCornerPoint.y());
 
     Vec2D newBottomRightCornerPoint;
     newBottomRightCornerPoint[0] = std::max(thisBottomRightCornerPoint.x(), other.bottomRightCornerPoint.x());
-    newBottomRightCornerPoint[1] = std::max(thisBottomRightCornerPoint.y(), other.bottomRightCornerPoint.y()); // max because (0,0) in
+    newBottomRightCornerPoint[1] = std::min(thisBottomRightCornerPoint.y(), other.bottomRightCornerPoint.y());
 
     BoundingBox unionBoundingBox(newTopLeftCornerPoint, newBottomRightCornerPoint);
+    unionBoundingBox.setIsEmpty(this->isEmpty() && other.isEmpty());
 
     return unionBoundingBox;
 }
@@ -127,7 +128,7 @@ BoundingBox BoundingBox::operator -(const BoundingBox &other)
     }
     else
     {
-        if((std::abs(other.topLeftCornerPoint.y() - this->topLeftCornerPoint.y())) <= (std::abs(other.bottomRightCornerPoint.y() - this->bottomRightCornerPoint.y())))
+        if((std::abs(other.topLeftCornerPoint.y() - this->topLeftCornerPoint.y())) >= (std::abs(other.bottomRightCornerPoint.y() - this->bottomRightCornerPoint.y())))
         {
             newTopCorner = Vec2D(this->topLeftCornerPoint.x(), other.bottomRightCornerPoint.y());
             newBotCorner = this->bottomRightCornerPoint;
@@ -141,6 +142,21 @@ BoundingBox BoundingBox::operator -(const BoundingBox &other)
 
     BoundingBox differenceBoundingBox(newTopCorner, newBotCorner);
 
+    if(((this->topLeftCornerPoint.x() >= other.topLeftCornerPoint.x()) &&
+        (this->topLeftCornerPoint.x() < other.bottomRightCornerPoint.x()) &&
+        (this->topLeftCornerPoint.y() <= other.topLeftCornerPoint.y()) &&
+        (this->topLeftCornerPoint.y() > other.bottomRightCornerPoint.y()) &&
+        (this->bottomRightCornerPoint.x() <= other.bottomRightCornerPoint.x()) &&
+        (this->bottomRightCornerPoint.y() >= other.bottomRightCornerPoint.y()) ))
+    {
+        differenceBoundingBox.setIsEmpty(true);
+    }
+    else
+    {
+        differenceBoundingBox.setIsEmpty(this->isEmpty() && other.isEmpty());
+    }
+
+
     return differenceBoundingBox;
 }
 
@@ -152,27 +168,31 @@ BoundingBox BoundingBox::operator ^(const BoundingBox &other)
 
     Vec2D newTopLeftCornerPoint;
     newTopLeftCornerPoint[0] = std::max(this->topLeftCornerPoint.x(), other.topLeftCornerPoint.x());
-    newTopLeftCornerPoint[1] = std::max(this->topLeftCornerPoint.y(), other.topLeftCornerPoint.y()); // max because (0,0) in QT is the top left point
+    newTopLeftCornerPoint[1] = std::min(this->topLeftCornerPoint.y(), other.topLeftCornerPoint.y());
 
     Vec2D newBottomRightCornerPoint;
     newBottomRightCornerPoint[0] = std::min(this->bottomRightCornerPoint.x(), other.bottomRightCornerPoint.x());
-    newBottomRightCornerPoint[1] = std::min(this->bottomRightCornerPoint.y(), other.bottomRightCornerPoint.y()); // min because (0,0) in
+    newBottomRightCornerPoint[1] = std::max(this->bottomRightCornerPoint.y(), other.bottomRightCornerPoint.y());
 
     BoundingBox intersectionBoundingBox(newTopLeftCornerPoint, newBottomRightCornerPoint);
 
     firstBoxIsNotIntersectingSecondOne = !((other.topLeftCornerPoint.x() < this->bottomRightCornerPoint.x()) &&
-                                           (other.topLeftCornerPoint.y() < this->bottomRightCornerPoint.y()) &&
+                                           (other.topLeftCornerPoint.y() > this->bottomRightCornerPoint.y()) &&
                                            (other.bottomRightCornerPoint.x() > this->topLeftCornerPoint.x()) &&
-                                           (other.bottomRightCornerPoint.y() > this->topLeftCornerPoint.y()) );
+                                           (other.bottomRightCornerPoint.y() < this->topLeftCornerPoint.y()) );
 
     secondBoxIsNotIntersectingFirstOne = !((this->topLeftCornerPoint.x() < other.bottomRightCornerPoint.x()) &&
-                                           (this->topLeftCornerPoint.y() < other.bottomRightCornerPoint.y()) &&
+                                           (this->topLeftCornerPoint.y() > other.bottomRightCornerPoint.y()) &&
                                            (this->bottomRightCornerPoint.x() > other.topLeftCornerPoint.x()) &&
-                                           (this->bottomRightCornerPoint.y() > other.topLeftCornerPoint.y()) );
+                                           (this->bottomRightCornerPoint.y() < other.topLeftCornerPoint.y()) );
 
     if( firstBoxIsNotIntersectingSecondOne || secondBoxIsNotIntersectingFirstOne )
     {
         intersectionBoundingBox.setIsEmpty(true);
+    }
+    else
+    {
+        intersectionBoundingBox.setIsEmpty(this->isEmpty() && other.isEmpty());
     }
 
     return intersectionBoundingBox;
@@ -205,10 +225,10 @@ bool BoundingBox::isEmpty() const
 
 bool BoundingBox::isInTheBox(Vec2D point) const
 {
-    return ( (point.x() >= this->topLeftCornerPoint.x())
+    return ( !this->isEmpty() && (point.x() >= this->topLeftCornerPoint.x())
              && (point.x() <= this->bottomRightCornerPoint.x())
-             && (point.y() >= this->topLeftCornerPoint.y())
-             && (point.y() <= this->bottomRightCornerPoint.y())
+             && (point.y() <= this->topLeftCornerPoint.y())
+             && (point.y() >= this->bottomRightCornerPoint.y())
            );
 }
 
@@ -228,9 +248,9 @@ void BoundingBox::addPoint(Vec2D point)
     if(!this->isInTheBox(point))
     {
         this->topLeftCornerPoint[0] = std::min(this->topLeftCornerPoint.x(), point.x());
-        this->topLeftCornerPoint[1] = std::min(this->topLeftCornerPoint.y(), point.y());
+        this->topLeftCornerPoint[1] = std::max(this->topLeftCornerPoint.y(), point.y());
         this->bottomRightCornerPoint[0] = std::max(this->bottomRightCornerPoint.x(), point.x());
-        this->bottomRightCornerPoint[1] = std::max(this->bottomRightCornerPoint.y(), point.y());
+        this->bottomRightCornerPoint[1] = std::min(this->bottomRightCornerPoint.y(), point.y());
     }
 }
 
