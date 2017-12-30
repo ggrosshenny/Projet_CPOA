@@ -2,7 +2,7 @@
 #ifndef __IMG2DGREY_H_
 #define __IMG2DGREY_H_
 
-#include <Img2D.hpp>
+#include <../image/Img2D.h>
 #include <sstream>
 #include <string>
 #include <iostream>

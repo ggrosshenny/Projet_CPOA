@@ -132,6 +132,7 @@ int main()
     CsgRegularPolygon poly3;
     assert(poly3.intersect(0.4, 0.0));
     assert(!poly3.intersect(-0.3, 0.0));
+    assert(!poly3.intersect(0.3, -0.3));
     std::cout << "Test of the regular polygon intersect passed" << std::endl;
 
     return 0;

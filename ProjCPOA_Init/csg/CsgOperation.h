@@ -2,6 +2,8 @@
 #define __CSGOPERATION_H
 
 #include "CsgNode.h"
+#include "CsgDisk.h"
+#include "CsgRegularPolygon.h"
 
 enum operation{op_union, op_inter, op_diff};
 

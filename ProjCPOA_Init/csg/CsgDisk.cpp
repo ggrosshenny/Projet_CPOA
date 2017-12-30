@@ -71,7 +71,6 @@ bool CsgDisk::intersect(double x, double y)
     if(this->intersectBBox(x, y))
     {
         double pointDistance = std::sqrt(std::pow( x - this->center.x() , 2) +  std::pow( y - this->center.y() , 2));
-        std::cout << "dist = " << pointDistance << std::endl;
         answ = (pointDistance <= this->radius);
     }
 
