@@ -192,4 +192,9 @@ inline std::ostream& operator<<(std::ostream& os, Matrix33D& obj)
     return os;
 }
 
+inline Vec2D operator*(Vec2D& vec, Matrix33D& matr)
+{
+    return matr * vec;
+}
+
 #endif

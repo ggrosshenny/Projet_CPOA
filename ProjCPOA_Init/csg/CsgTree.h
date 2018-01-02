@@ -45,7 +45,7 @@ public:
      * @brief addPrimitive add the primitive of the given primitive type in the trees list
      * @param primType
      */
-    void addPrimitive(enum primitiveType primType);
+    int addPrimitive(enum primitiveType primType);
 
 
     /**
@@ -56,12 +56,106 @@ public:
 
 
     /**
+     * @brief addPrimitive overload to make use of the method easier with a disk primitive
+     * @param disk
+     */
+    void addPrimitive(CsgDisk* disk);
+
+
+    /**
+     * @brief addPrimitive overload to make use of the method easier with a regular polygon primitive
+     * @param regPoly
+     */
+    void addPrimitive(CsgRegularPolygon* regPoly);
+
+
+    /**
      * @brief joinPrimitives join two primitives with a CsgOperation with the given operation type
      * @param firstPrimitive primitive pointer
      * @param secondPrimitive primitive pointer
      * @param opType
+     * @return
      */
-    void joinPrimitives(CsgNode* firstPrimitive, CsgNode* secondPrimitive, operation opType);
+    CsgOperation* joinPrimitives(CsgNode* firstPrimitive, CsgNode* secondPrimitive, operation opType);
+
+
+    /**
+     * @brief joinPrimitives join two primitives with a CsgOperation with the given operation type
+     * @param firstPrimitive primitive pointer
+     * @param secondPrimitive primitive pointer
+     * @param opType
+     * @return
+     */
+    CsgOperation* joinPrimitives(CsgDisk* firstPrimitive, CsgDisk* secondPrimitive, operation opType);
+
+    /**
+     * @brief joinPrimitives join two primitives with a CsgOperation with the given operation type
+     * @param firstPrimitive primitive pointer
+     * @param secondPrimitive primitive pointer
+     * @param opType
+     * @return
+     */
+    CsgOperation* joinPrimitives(CsgDisk* firstPrimitive, CsgRegularPolygon* secondPrimitive, operation opType);
+
+
+    /**
+     * @brief joinPrimitives join two primitives with a CsgOperation with the given operation type
+     * @param firstPrimitive primitive pointer
+     * @param secondPrimitive primitive pointer
+     * @param opType
+     * @return
+     */
+    CsgOperation* joinPrimitives(CsgRegularPolygon* firstPrimitive, CsgDisk* secondPrimitive, operation opType);
+
+
+    /**
+     * @brief joinPrimitives join two primitives with a CsgOperation with the given operation type
+     * @param firstPrimitive primitive pointer
+     * @param secondPrimitive primitive pointer
+     * @param opType
+     * @return
+     */
+    CsgOperation* joinPrimitives(CsgRegularPolygon* firstPrimitive, CsgRegularPolygon* secondPrimitive, operation opType);
+
+
+    /**
+     * @brief joinPrimitives join two primitives with a CsgOperation with the given operation type
+     * @param firstPrimitive primitive pointer
+     * @param secondPrimitive primitive pointer
+     * @param opType
+     * @return
+     */
+    CsgOperation* joinPrimitives(CsgRegularPolygon* firstPrimitive, CsgOperation* secondPrimitive, operation opType);
+
+
+    /**
+     * @brief joinPrimitives join two primitives with a CsgOperation with the given operation type
+     * @param firstPrimitive primitive pointer
+     * @param secondPrimitive primitive pointer
+     * @param opType
+     * @return
+     */
+    CsgOperation* joinPrimitives(CsgOperation* firstPrimitive, CsgRegularPolygon* secondPrimitive, operation opType);
+
+
+    /**
+     * @brief joinPrimitives join two primitives with a CsgOperation with the given operation type
+     * @param firstPrimitive primitive pointer
+     * @param secondPrimitive primitive pointer
+     * @param opType
+     * @return
+     */
+    CsgOperation* joinPrimitives(CsgOperation* firstPrimitive, CsgDisk* secondPrimitive, operation opType);
+
+
+    /**
+     * @brief joinPrimitives join two primitives with a CsgOperation with the given operation type
+     * @param firstPrimitive primitive pointer
+     * @param secondPrimitive primitive pointer
+     * @param opType
+     * @return
+     */
+    CsgOperation* joinPrimitives(CsgDisk* firstPrimitive, CsgOperation* secondPrimitive, operation opType);
 
 
     /**
@@ -69,8 +163,9 @@ public:
      * @param firstPrimId primitive identifier
      * @param secondPrimId primitive identifier
      * @param opType
+     * @return
      */
-    void joinPrimitives(int firstPrimId, int secondPrimId, operation opType);
+    CsgOperation* joinPrimitives(int firstPrimId, int secondPrimId, operation opType);
 
 
     /**

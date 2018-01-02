@@ -22,21 +22,21 @@ void CsgTree::addPrimitive(CsgNode *primitive)
 }
 
 
-void CsgTree::addPrimitive(primitiveType primType)
+int CsgTree::addPrimitive(primitiveType primType)
 {
-    CsgDisk newDisk;
-    CsgRegularPolygon regpoly;
+    CsgDisk* newDisk = new CsgDisk();
+    CsgRegularPolygon* regpoly = new CsgRegularPolygon();
 
     switch(primType)
     {
         case prim_disk:
-            this->treesList[this->nextId] = dynamic_cast<CsgNode*>(&newDisk);
-            newDisk.setId(this->nextId);
+            this->treesList[this->nextId] = dynamic_cast<CsgNode*>(newDisk);
+            newDisk->setId(this->nextId);
             break;
 
         case prim_regPoly:
-            this->treesList[this->nextId] = dynamic_cast<CsgNode*>(&regpoly);
-            regpoly.setId(this->nextId);
+            this->treesList[this->nextId] = dynamic_cast<CsgNode*>(regpoly);
+            regpoly->setId(this->nextId);
             break;
 
         default:
@@ -44,35 +44,97 @@ void CsgTree::addPrimitive(primitiveType primType)
     }
 
     this->nextId++;
+    return this->nextId-1;
 }
 
 
-void CsgTree::joinPrimitives(CsgNode *firstPrimitive, CsgNode *secondPrimitive, operation opType)
+void CsgTree::addPrimitive(CsgDisk* disk)
 {
-    CsgOperation newOp(firstPrimitive, secondPrimitive, opType);
-    newOp.setId(this->nextId);
+    this->addPrimitive(dynamic_cast<CsgNode*>(disk));
+}
+
+
+void CsgTree::addPrimitive(CsgRegularPolygon* regPoly)
+{
+    this->addPrimitive(dynamic_cast<CsgNode*>(regPoly));
+}
+
+
+CsgOperation* CsgTree::joinPrimitives(CsgNode *firstPrimitive, CsgNode *secondPrimitive, operation opType)
+{
+    CsgOperation* newOp = new CsgOperation(firstPrimitive, secondPrimitive, opType);
+    newOp->setId(this->nextId);
 
     this->treesList.erase(this->treesList.find(firstPrimitive->getId()));
     this->treesList.erase(this->treesList.find(secondPrimitive->getId()));
-    this->treesList[this->nextId] = dynamic_cast<CsgNode*>(&newOp);
+    this->treesList[this->nextId] = dynamic_cast<CsgNode*>(newOp);
 
     this->nextId++;
+    return newOp;
 }
 
 
-void CsgTree::joinPrimitives(int firstPrimId, int secondPrimId, operation opType)
+CsgOperation* CsgTree::joinPrimitives(CsgDisk* firstPrimitive, CsgDisk* secondPrimitive, operation opType)
+{
+    return this->joinPrimitives(dynamic_cast<CsgNode*>(firstPrimitive), dynamic_cast<CsgNode*>(secondPrimitive), opType);
+}
+
+
+CsgOperation* CsgTree::joinPrimitives(CsgDisk* firstPrimitive, CsgRegularPolygon* secondPrimitive, operation opType)
+{
+    return this->joinPrimitives(dynamic_cast<CsgNode*>(firstPrimitive), dynamic_cast<CsgNode*>(secondPrimitive), opType);
+}
+
+
+CsgOperation* CsgTree::joinPrimitives(CsgRegularPolygon* firstPrimitive, CsgDisk* secondPrimitive, operation opType)
+{
+    return this->joinPrimitives(dynamic_cast<CsgNode*>(firstPrimitive), dynamic_cast<CsgNode*>(secondPrimitive), opType);
+}
+
+
+CsgOperation* CsgTree::joinPrimitives(CsgRegularPolygon* firstPrimitive, CsgRegularPolygon* secondPrimitive, operation opType)
+{
+    return this->joinPrimitives(dynamic_cast<CsgNode*>(firstPrimitive), dynamic_cast<CsgNode*>(secondPrimitive), opType);
+}
+
+CsgOperation* CsgTree::joinPrimitives(CsgRegularPolygon* firstPrimitive, CsgOperation* secondPrimitive, operation opType)
+{
+    return this->joinPrimitives(dynamic_cast<CsgNode*>(firstPrimitive), dynamic_cast<CsgNode*>(secondPrimitive), opType);
+}
+
+
+CsgOperation* CsgTree::joinPrimitives(CsgOperation* firstPrimitive, CsgRegularPolygon* secondPrimitive, operation opType)
+{
+    return this->joinPrimitives(dynamic_cast<CsgNode*>(firstPrimitive), dynamic_cast<CsgNode*>(secondPrimitive), opType);
+}
+
+
+CsgOperation* CsgTree::joinPrimitives(CsgOperation* firstPrimitive, CsgDisk* secondPrimitive, operation opType)
+{
+    return this->joinPrimitives(dynamic_cast<CsgNode*>(firstPrimitive), dynamic_cast<CsgNode*>(secondPrimitive), opType);
+}
+
+
+CsgOperation* CsgTree::joinPrimitives(CsgDisk* firstPrimitive, CsgOperation* secondPrimitive, operation opType)
+{
+    return this->joinPrimitives(dynamic_cast<CsgNode*>(firstPrimitive), dynamic_cast<CsgNode*>(secondPrimitive), opType);
+}
+
+
+CsgOperation* CsgTree::joinPrimitives(int firstPrimId, int secondPrimId, operation opType)
 {
     CsgNode* firstPrim = dynamic_cast<CsgNode*>(this->treesList[firstPrimId]);
     CsgNode* secondPrim = dynamic_cast<CsgNode*>(this->treesList[secondPrimId]);
 
-    CsgOperation newOp(firstPrim, secondPrim, opType);
-    newOp.setId(this->nextId);
+    CsgOperation* newOp = new CsgOperation(firstPrim, secondPrim, opType);
+    newOp->setId(this->nextId);
 
     this->treesList.erase(this->treesList.find(firstPrim->getId()));
     this->treesList.erase(this->treesList.find(secondPrim->getId()));
-    this->treesList[this->nextId] = dynamic_cast<CsgNode*>(&newOp);
+    this->treesList[this->nextId] = dynamic_cast<CsgNode*>(newOp);
 
     this->nextId++;
+    return newOp;
 }
 
 
@@ -109,7 +171,7 @@ void CsgTree::drawInImage(Img2DGrey &img)
         {
             if(this->isPixelIntersectingTree(j, i))
             {
-                img[i][j] = (unsigned char)255;
+                img[(img.getHeight()-1) - i][j] = (unsigned char)255;
             }
         }
     }

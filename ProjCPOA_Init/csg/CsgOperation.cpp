@@ -186,6 +186,10 @@ bool CsgOperation::intersect(double x, double y)
             {
                 leftChildIntersect = dynamic_cast<CsgRegularPolygon*>(this->leftChild)->intersect(x, y);
             }
+            else if(dynamic_cast<CsgOperation*>(this->leftChild) != NULL)
+            {
+                leftChildIntersect = dynamic_cast<CsgOperation*>(this->leftChild)->intersect(x, y);
+            }
 
             // Find the type of the right child
             if(dynamic_cast<CsgDisk*>(this->rightChild) != NULL)
@@ -195,6 +199,10 @@ bool CsgOperation::intersect(double x, double y)
             else if(dynamic_cast<CsgRegularPolygon*>(this->rightChild) != NULL)
             {
                 rightChildIntersect = dynamic_cast<CsgRegularPolygon*>(this->rightChild)->intersect(x, y);
+            }
+            else if(dynamic_cast<CsgOperation*>(this->rightChild) != NULL)
+            {
+                rightChildIntersect = dynamic_cast<CsgOperation*>(this->rightChild)->intersect(x, y);
             }
 
 
@@ -218,11 +226,37 @@ bool CsgOperation::intersect(double x, double y)
         }
         else if(this->leftChild != NULL)
         {
-            answ = leftChild->intersect(x, y);
+            // Find the type of the left child
+            if(dynamic_cast<CsgDisk*>(this->leftChild) != NULL)
+            {
+                leftChildIntersect = dynamic_cast<CsgDisk*>(this->leftChild)->intersect(x, y);
+            }
+            else if(dynamic_cast<CsgRegularPolygon*>(this->leftChild) != NULL)
+            {
+                leftChildIntersect = dynamic_cast<CsgRegularPolygon*>(this->leftChild)->intersect(x, y);
+            }
+            else if(dynamic_cast<CsgOperation*>(this->leftChild) != NULL)
+            {
+                leftChildIntersect = dynamic_cast<CsgOperation*>(this->leftChild)->intersect(x, y);
+            }
+            answ = leftChildIntersect;
         }
         else if(this->rightChild != NULL)
         {
-            answ = rightChild->intersect(x, y);
+            // Find the type of the right child
+            if(dynamic_cast<CsgDisk*>(this->rightChild) != NULL)
+            {
+                rightChildIntersect = dynamic_cast<CsgDisk*>(this->rightChild)->intersect(x, y);
+            }
+            else if(dynamic_cast<CsgRegularPolygon*>(this->rightChild) != NULL)
+            {
+                rightChildIntersect = dynamic_cast<CsgRegularPolygon*>(this->rightChild)->intersect(x, y);
+            }
+            else if(dynamic_cast<CsgOperation*>(this->rightChild) != NULL)
+            {
+                rightChildIntersect = dynamic_cast<CsgOperation*>(this->rightChild)->intersect(x, y);
+            }
+            answ = rightChildIntersect;
         }
     }
 

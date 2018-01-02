@@ -13,12 +13,14 @@ CsgDisk::CsgDisk() : CsgPrimitive()
 
 CsgDisk::CsgDisk(double radius) : CsgPrimitive()
 {
+    this->BBox = BoundingBox({-radius, radius}, {radius, -radius});
     this->radius = radius;
 }
 
 
 CsgDisk::CsgDisk(double x, double y) : CsgPrimitive()
 {
+    this->BBox = BoundingBox({x-1.0, y+1.0}, {x+1.0, y-1.0});
     this->setCenter(x, y);
     this->radius = 1.0;
 }
@@ -26,6 +28,7 @@ CsgDisk::CsgDisk(double x, double y) : CsgPrimitive()
 
 CsgDisk::CsgDisk(double x, double y, double radius) : CsgPrimitive()
 {
+    this->BBox = BoundingBox({x-radius, y+radius}, {x+radius, y-radius});
     this->setCenter(x, y);
     this->radius = radius;
 }
