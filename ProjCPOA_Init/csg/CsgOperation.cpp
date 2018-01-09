@@ -11,6 +11,8 @@ CsgOperation::CsgOperation()
     this->opType = op_union;
     this->leftChild = NULL;
     this->rightChild = NULL;
+    this->transformationMatrix = Matrix33D().identity();
+    this->transformationInversedMatrix = this->transformationMatrix.inverse();
     this->BBox = BoundingBox({-1.0,1.0}, {1.0, -1.0});
 }
 
@@ -21,6 +23,8 @@ CsgOperation::CsgOperation(operation op0)
     this->opType = op0;
     this->leftChild = NULL;
     this->rightChild = NULL;
+    this->transformationMatrix = Matrix33D().identity();
+    this->transformationInversedMatrix = this->transformationMatrix.inverse();
     this->BBox = BoundingBox({-1.0,1.0}, {1.0, -1.0});
 }
 
@@ -31,6 +35,8 @@ CsgOperation::CsgOperation(CsgNode *leftChild0, CsgNode *rightChild0, operation 
     this->opType = op0;
     this->leftChild = leftChild0;
     this->rightChild = rightChild0;
+    this->transformationMatrix = Matrix33D().identity();
+    this->transformationInversedMatrix = this->transformationMatrix.inverse();
 
     if(leftChild0 != NULL)
     {
@@ -82,6 +88,86 @@ void CsgOperation::setChildren(CsgNode *leftChild0, CsgNode *rightChild0)
 
 // =======
 // Methods
+
+
+void CsgOperation::applyLocalTransformation()
+{
+    Matrix33D tranlateToOrigin = Matrix33D::translation(-(this->BBox.getCenter().x()), -(this->BBox.getCenter().y()));
+    Matrix33D tranlateToCenter = Matrix33D::translation(this->BBox.getCenter().x(), this->BBox.getCenter().y());
+    Matrix33D transfo = tranlateToCenter * this->transformationMatrix;
+    transfo = transfo * tranlateToOrigin;
+
+    if(this->leftChild != NULL)
+    {
+        if(dynamic_cast<CsgOperation*>(this->leftChild) != NULL)
+        {
+            dynamic_cast<CsgOperation*>(this->leftChild)->applyTransformation(transfo);
+        }
+        else if(dynamic_cast<CsgDisk*>(this->leftChild) != NULL)
+        {
+            dynamic_cast<CsgDisk*>(this->leftChild)->applyTransformation(transfo);
+        }
+        else if(dynamic_cast<CsgRegularPolygon*>(this->leftChild) != NULL)
+        {
+            dynamic_cast<CsgRegularPolygon*>(this->leftChild)->applyTransformation(transfo);
+        }
+    }
+    if(this->rightChild != NULL)
+    {
+        if(dynamic_cast<CsgOperation*>(this->rightChild) != NULL)
+        {
+            dynamic_cast<CsgOperation*>(this->rightChild)->applyTransformation(transfo);
+        }
+        else if(dynamic_cast<CsgDisk*>(this->rightChild) != NULL)
+        {
+            dynamic_cast<CsgDisk*>(this->rightChild)->applyTransformation(transfo);
+        }
+        else if(dynamic_cast<CsgRegularPolygon*>(this->rightChild) != NULL)
+        {
+            dynamic_cast<CsgRegularPolygon*>(this->rightChild)->applyTransformation(transfo);
+        }
+    }
+}
+
+
+void CsgOperation::applyTransformation(Matrix33D matTransfo)
+{
+    Matrix33D tranlateToOrigin = Matrix33D::translation(-this->BBox.getCenter().x(), -this->BBox.getCenter().y());
+    Matrix33D tranlateToCenter = Matrix33D::translation(this->BBox.getCenter().x(), this->BBox.getCenter().y());
+    Matrix33D transfo = tranlateToCenter * matTransfo;
+    transfo = transfo * tranlateToOrigin;
+
+    if(this->leftChild != NULL)
+    {
+        if(dynamic_cast<CsgOperation*>(this->leftChild) != NULL)
+        {
+            dynamic_cast<CsgOperation*>(this->leftChild)->applyTransformation(transfo);
+        }
+        else if(dynamic_cast<CsgDisk*>(this->leftChild) != NULL)
+        {
+            dynamic_cast<CsgDisk*>(this->leftChild)->applyTransformation(transfo);
+        }
+        else if(dynamic_cast<CsgRegularPolygon*>(this->leftChild) != NULL)
+        {
+            dynamic_cast<CsgRegularPolygon*>(this->leftChild)->applyTransformation(transfo);
+        }
+    }
+    if(this->rightChild != NULL)
+    {
+        if(dynamic_cast<CsgOperation*>(this->rightChild) != NULL)
+        {
+            dynamic_cast<CsgOperation*>(this->rightChild)->applyTransformation(transfo);
+        }
+        else if(dynamic_cast<CsgDisk*>(this->rightChild) != NULL)
+        {
+            dynamic_cast<CsgDisk*>(this->rightChild)->applyTransformation(transfo);
+        }
+        else if(dynamic_cast<CsgRegularPolygon*>(this->rightChild) != NULL)
+        {
+            dynamic_cast<CsgRegularPolygon*>(this->rightChild)->applyTransformation(transfo);
+        }
+    }
+}
 
 
 void CsgOperation::updateBoundingBox()
@@ -217,7 +303,7 @@ bool CsgOperation::intersect(double x, double y)
                     break;
 
                 case op_diff:
-                    answ = leftChildIntersect || rightChildIntersect;
+                    answ = leftChildIntersect && !rightChildIntersect;
                     break;
 
                 default:

@@ -41,6 +41,9 @@ public:
      */
     CsgOperation(CsgNode* leftChild0, CsgNode* rightChild0, enum operation op0);
 
+
+    ~CsgOperation() {}
+
 // Getters and setters
 public:
 
@@ -68,6 +71,19 @@ public:
 
 // Methods
 public:
+
+
+    /**
+     * @brief applyLocalTransformation apply the transformation matrix on children
+     */
+    void applyLocalTransformation();
+
+
+    /**
+     * @brief applyTransformation apply the given transformation matrix on children
+     * @param matTransfo
+     */
+    void applyTransformation(Matrix33D matTransfo);
 
 
     /**

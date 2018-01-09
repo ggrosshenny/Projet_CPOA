@@ -20,6 +20,21 @@
  */
 
 
+unsigned char* Img2DGrey::getDataPtr()
+{
+    unsigned char* dataPtr = new unsigned char[this->width * this->height];
+
+    for(unsigned int i = 0; i<this->height; i++)
+    {
+        for(unsigned int j=0; j<this->width; j++)
+        {
+            dataPtr[i*this->width + j] = this->data[i][j];
+        }
+    }
+
+    return dataPtr;
+}
+
 
 void Img2DGrey::loadImageFromPGMFile(std::string fileName)
 {
@@ -148,6 +163,8 @@ void Img2DGrey::saveImageToPGMFile(std::string fileName) const
         }
         pgmFile << (unsigned int)this->data[i][this->width-1] << std::endl;
     }
+
+    pgmFile.close();
 }
 
 

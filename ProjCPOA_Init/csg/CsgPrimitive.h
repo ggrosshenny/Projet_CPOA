@@ -11,8 +11,7 @@ enum transformation{rotation, scale, translation};
 class CsgPrimitive : public virtual CsgNode
 {
 protected:
-    Matrix33D transformationMatrix;
-    Matrix33D transformationInversedMatrix;
+
     Vec2D center;
 
 
@@ -23,6 +22,8 @@ public:
      * @brief CsgPrimitive
      */
     CsgPrimitive();
+
+    virtual ~CsgPrimitive() = default;
 
 // Getters and setters
 public:
@@ -44,20 +45,6 @@ public:
     Vec2D getCenter();
 
 
-    /**
-     * @brief setTransformationMatrix change the transformation matrix with a new one
-     * @param matr
-     */
-    void setTransformationMatrix(Matrix33D matr);
-
-
-    /**
-     * @brief getTransformationMatrix return the current transformation matrix
-     * @return
-     */
-    Matrix33D getTransformationMatrix();
-
-
 // Methods
 public:
 
@@ -66,6 +53,13 @@ public:
      * @brief applyLocalTransformation apply the transformation matrix on all vertices of the primitives
      */
     virtual void applyLocalTransformation() = 0;
+
+
+    /**
+     * @brief applyTransformation apply the given transformation matrix on all vertices of the primitives
+     * @param matTransfo
+     */
+    virtual void applyTransformation(Matrix33D matTransfo) = 0;
 
 
     /**

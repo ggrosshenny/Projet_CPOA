@@ -45,9 +45,15 @@ public:
      */
     CsgRegularPolygon(double x, double y, int verticesNumber);
 
+
+    ~CsgRegularPolygon() {}
+
+
 // Getters and setters
 public:
     Vec2D* getPtr();
+
+    int getVerticesNumber();
 
 // Methods
 public:
@@ -57,6 +63,14 @@ public:
      * @brief applyLocalTransformation apply the transformation matrix on all vertices of the primitives
      */
     void applyLocalTransformation();
+
+
+    /**
+     * @brief applyTransformation apply the given transformation matrix on all vertices of the primitives
+     * @param matTransfo
+     */
+    void applyTransformation(Matrix33D matTransfo);
+
 
     /**
      * @brief intersect return if the

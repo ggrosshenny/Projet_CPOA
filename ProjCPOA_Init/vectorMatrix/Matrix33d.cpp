@@ -169,8 +169,8 @@ Matrix33D Matrix33D::inverse()
 
     if(det == 0.0)
     {
-        std::cout << "WARNING: det = " << det << " ! Cannot invert matrix" << std::endl;
-        exit(1);
+        std::cerr << "WARNING: det = " << det << " ! Cannot invert matrix" << std::endl;
+        return Matrix33D::identity();
     }
     else
     {   

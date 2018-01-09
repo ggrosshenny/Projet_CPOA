@@ -17,6 +17,7 @@ CsgRegularPolygon::CsgRegularPolygon() : CsgPrimitive()
         this->vertices[i] = Vec2D(x, y);
     }
 
+    this->label = "RegPoly";
     this->BBox = BoundingBox({-0.5, 0.5}, {0.5, -0.5});
 
     this->verticesNumber = 3;
@@ -30,6 +31,7 @@ CsgRegularPolygon::CsgRegularPolygon(double x, double y) : CsgPrimitive()
     this->vertices = new Vec2D[3];
     this->verticesNumber = 3;
     this->setCenter(x, y);
+    this->label = "RegPoly";
     this->BBox = BoundingBox({x-0.5, y+0.5}, {x+0.5, y-0.5});
 
     for(int i = 0; i<3; i++)
@@ -47,6 +49,7 @@ CsgRegularPolygon::CsgRegularPolygon(int verticesNumber) : CsgPrimitive()
     double yV = 0.0;
     this->vertices = new Vec2D[verticesNumber];
     this->verticesNumber = verticesNumber;
+    this->label = "RegPoly";
     this->BBox = BoundingBox({-0.5, 0.5}, {0.5, -0.5});
 
     for(int i = 0; i<verticesNumber; i++)
@@ -65,6 +68,7 @@ CsgRegularPolygon::CsgRegularPolygon(double x, double y, int verticesNumber) : C
     this->vertices = new Vec2D[verticesNumber];
     this->verticesNumber = verticesNumber;
     this->setCenter(x, y);
+    this->label = "RegPoly";
     this->BBox = BoundingBox({x - 0.5, y + 0.5}, {x + 0.5, y-0.5});
 
     for(int i = 0; i<verticesNumber; i++)
@@ -85,6 +89,12 @@ Vec2D* CsgRegularPolygon::getPtr()
 }
 
 
+int CsgRegularPolygon::getVerticesNumber()
+{
+    return this->verticesNumber;
+}
+
+
 // =======
 // Methods
 
@@ -99,8 +109,38 @@ void CsgRegularPolygon::applyLocalTransformation()
         vertices[i] = this->transformationMatrix * vertices[i];
     }
 
+    this->center = this->transformationMatrix * this->center;
+
     newTopCorner = this->transformationMatrix * newTopCorner;
     newBotCorner = this->transformationMatrix * newBotCorner;
+
+    this->BBox.setTopLeftCornerPoint(newTopCorner);
+    this->BBox.setBottomRightCornerPoint(newBotCorner);
+
+    if(this->father != NULL)
+    {
+        if(dynamic_cast<CsgOperation*>(this->father) != NULL)
+        {
+            dynamic_cast<CsgOperation*>(this->father)->updateBoundingBox();
+        }
+    }
+}
+
+
+void CsgRegularPolygon::applyTransformation(Matrix33D matTransfo)
+{
+    Vec2D newTopCorner = this->BBox.getTopLeftCornerPoint();
+    Vec2D newBotCorner = this->BBox.getBottomRightCornerPoint();
+
+    for(int i=0; i<this->verticesNumber; i++)
+    {
+        vertices[i] = matTransfo * vertices[i];
+    }
+
+    this->center = matTransfo * this->center;
+
+    newTopCorner = matTransfo * newTopCorner;
+    newBotCorner = matTransfo * newBotCorner;
 
     this->BBox.setTopLeftCornerPoint(newTopCorner);
     this->BBox.setBottomRightCornerPoint(newBotCorner);

@@ -97,7 +97,7 @@ public:
      * @param other
      * @return
      */
-    Img2D<T>& operator=(Img2D<T>& other);
+    Img2D<T> operator=(Img2D<T>& other);
 
 
 // Image manipulation methods

@@ -97,7 +97,7 @@ int main()
     poly1.addTransformation(2, 2, translation);
     poly1.applyLocalTransformation();
     poly1Vertices = poly1.getPtr();
-    assert(poly1.getCenter() == point00);
+    assert(poly1.getCenter() == Vec2D(2,2));
     assert( ((poly1Vertices[0].x() > 2.49) && (poly1Vertices[0].x() < 2.51))  && ((poly1Vertices[0].y() > 1.99) && (poly1Vertices[0].y() < 2.01)));
     assert( ((poly1Vertices[1].x() > 1.74) && (poly1Vertices[1].x() < 1.76))  && ((poly1Vertices[1].y() > 2.43) && (poly1Vertices[1].y() < 2.44)));
     assert( ((poly1Vertices[2].x() > 1.74) && (poly1Vertices[2].x() < 1.76))  && ((poly1Vertices[2].y() > 1.55) && (poly1Vertices[2].y() < 1.57)));

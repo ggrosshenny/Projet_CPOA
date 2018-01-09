@@ -2,6 +2,7 @@
 #define __PROJECTVECTOR_HPP_
 
 #include "ProjectVectors.h"
+#include "Matrix33d.h"
 #include <cmath>
 
 

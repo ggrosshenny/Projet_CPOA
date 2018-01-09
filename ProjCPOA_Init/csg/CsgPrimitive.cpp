@@ -29,19 +29,6 @@ Vec2D CsgPrimitive::getCenter()
 }
 
 
-void CsgPrimitive::setTransformationMatrix(Matrix33D matr)
-{
-    this->transformationMatrix = matr;
-    this->transformationInversedMatrix = matr.inverse();
-}
-
-
-Matrix33D CsgPrimitive::getTransformationMatrix()
-{
-    return this->transformationMatrix;
-}
-
-
 // =======
 // Methods
 

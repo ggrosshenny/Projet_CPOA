@@ -9,22 +9,26 @@
 
 
 
-RenderImg::RenderImg(/*BoundingBox& bb,*/ QWidget *parent ):
+RenderImg::RenderImg(BoundingBox &bb, QWidget *parent ):
 	QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
 	m_texture(0),
 	m_widthTex(0),
 	m_heightTex(0),
 	m_ptrTex(NULL),
-//	m_img(1024,1024),
-	m_drawSobel(false),
-	m_BBdraw(false)
-//	m_BB(bb)
+    m_drawSobel(false),
+    m_BBdraw(true),
+    m_BB(bb),
+    m_img(1024,1024),
+    m_grad(1024, 1024)
   // QQ INIT A AJOUTER ?
 
 {
     m_timer = new QTimer(this);
     m_timer->setInterval(20);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(animate()));
+    m_widthTex = getWidth();
+    m_heightTex = getHeight();
+    m_ptrTex = m_img.getDataPtr();
 
 
 	// VOTRE CODE ICI
@@ -36,6 +40,11 @@ void RenderImg::loadTexture(const std::string& filename)
 {
 	// VOTRE CODE ICI
 
+    m_img.loadImageFromPGMFile(filename);
+    m_ptrTex = m_img.getDataPtr();
+    m_widthTex = getWidth();
+    m_heightTex = getHeight();
+
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, m_widthTex, m_heightTex, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, m_ptrTex);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -45,22 +54,31 @@ void RenderImg::loadTexture(const std::string& filename)
 
 void RenderImg::updateDataTexture()
 {
-//	m_ptrTex = m_img.getDataPtr();
+    m_ptrTex = m_img.getDataPtr();
+    m_widthTex = getWidth();
+    m_heightTex = getHeight();
 	glBindTexture(GL_TEXTURE_2D, m_texture);
-	glTexSubImage2D(GL_TEXTURE_2D,0,0,0,m_widthTex, m_heightTex, GL_LUMINANCE, GL_UNSIGNED_BYTE, m_ptrTex);
+    glTexSubImage2D(GL_TEXTURE_2D,0,0,0,m_widthTex, m_heightTex, GL_LUMINANCE, GL_UNSIGNED_BYTE, m_ptrTex);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	updateGL();
+    paintGL();
+}
+
+
+Img2DGrey& RenderImg::getImg()
+{
+    return m_img;
 }
 
 
 unsigned int RenderImg::getWidth()
 {
-	return 0; // RETURN IMAGE WIDTH
+    return m_img.getWidth(); // RETURN IMAGE WIDTH
 }
 
 unsigned int RenderImg::getHeight()
 {
-		return 0; // RETURN IMAGE HEIGHT
+        return m_img.getHeight(); // RETURN IMAGE HEIGHT
 }
 
 RenderImg::~RenderImg()
@@ -71,6 +89,7 @@ RenderImg::~RenderImg()
 
 void RenderImg::initializeGL()
 {
+
 	glClearColor(0.0f,0.0f,0.4f,0.0f);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
@@ -92,13 +111,14 @@ void RenderImg::initializeGL()
 
 void RenderImg::paintGL()
 {
+    glClearColor(0.0f,0.0f,0.4f,0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 
-	glColor3f(1.0,1.0,1.0);
+    glColor3f(1.0,1.0,1.0);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0,0);
 	glVertex2f( -1,1);
@@ -117,8 +137,8 @@ void RenderImg::paintGL()
 	if (m_drawSobel)
 		drawSobel();
 
-//	if (m_BBdraw)
-//		drawBB(m_BB);
+    if (m_BBdraw)
+        drawBB(m_BB);
 
 }
 
@@ -158,7 +178,7 @@ void RenderImg::mousePressEvent(QMouseEvent *event)
 	m_lastPos.setX(x);
 	m_lastPos.setY(y);
 
-	std::cout << "Mouse-press in widget"<< event->x() << " / "<< event->y() << std::endl;
+    std::cout << "Mouse-press in widget "<< event->x() << " / "<< event->y() << std::endl;
 	std::cout << " =>  position in texture "<< x << " / "<< y << std::endl;
 
 	if (m_state_modifier & Qt::ShiftModifier)
@@ -252,6 +272,7 @@ void RenderImg::clean()
 			*ptr++ = 0;
 		}
 	}
+
 }
 
 void RenderImg::toggleSobel()
@@ -259,9 +280,10 @@ void RenderImg::toggleSobel()
 	m_drawSobel = !m_drawSobel;
 	if (m_drawSobel)
 	{
-//		m_img = m_img.average(2);
-//		m_grad = GradientSobel::gradient33(m_img);
-//		m_img.threshold(128);
+        m_img.smooth(2);
+        Img2D<Vec2D> temp = gradient.gradient33(m_img);
+        m_grad = temp;
+        m_img.tresholding(128);
 		updateDataTexture();
 	}
 	update();
@@ -276,18 +298,18 @@ void RenderImg::drawSobel()
 		for (int i=0; i<m_widthTex; i+=2)
 		{
 			// get value of gradiant
-			// Vec2f v = ??
+             Vec2D v = m_grad[j][i];
 
-//			if (v*v > 0.001f)
-//			{
-//				float x = -1.0f + (2.0f*i)/(m_widthTex-1);
-//				float y = 1.0f  - (2.0f*j)/(m_heightTex-1);// minus because of GL is bottom to up and image up to boytom
-//				v *= 4.0f/m_widthTex;
-//				glColor3f(1.0f,1.0f,0.0f);
-//				glVertex2f(x,y);
-//				glColor3f(1.0f,0.0f,0.0f);
-//				glVertex2f(x+v[0],y-v[1]);
-//			}
+            if (v*v > 0.001f)
+            {
+                float x = -1.0f + (2.0f*i)/(m_widthTex-1);
+                float y = 1.0f  - (2.0f*j)/(m_heightTex-1);// minus because of GL is bottom to up and image up to boytom
+                v *= 4.0f/m_widthTex;
+                glColor3f(1.0f,1.0f,0.0f);
+                glVertex2f(x,y);
+                glColor3f(1.0f,0.0f,0.0f);
+                glVertex2f(x+v[0],y-v[1]);
+            }
 		}
 	}
 	glEnd();
@@ -298,10 +320,15 @@ void RenderImg::drawBB(const BoundingBox& bb)
 {
 	glBegin(GL_LINE_LOOP);
 	glColor3f(1.0f,0.5f,0.5f);
-//	glVertex2f( xImg2GL(??), yImg2GL(??) );
-//	glVertex2f( xImg2GL(??), yImg2GL(??) );
-//	glVertex2f( xImg2GL(??), yImg2GL(??) );
-//	glVertex2f( xImg2GL(??), yImg2GL(??) );
+    int topX = bb.getTopLeftCornerPoint().x();
+    int topY = bb.getTopLeftCornerPoint().y();
+    int botX = bb.getBottomRightCornerPoint().x();
+    int botY = bb.getBottomRightCornerPoint().y();
+
+    glVertex2f( xImg2GL(topX), yImg2GL(topY) );
+    glVertex2f( xImg2GL(botX), yImg2GL(topY) );
+    glVertex2f( xImg2GL(botX), yImg2GL(botY) );
+    glVertex2f( xImg2GL(topX), yImg2GL(botY) );
 	glEnd();
 }
 

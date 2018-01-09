@@ -61,6 +61,13 @@ int main()
     assert(!opUnion.intersect(2.9, 0.95));
     std::cout << "Test of CsgOperation intersect passed" << std::endl;
 
+    // Test of applyLocalTransformation
+    std::cout << "Test of applyLocalTransformation" << std::endl;
+    opUnion.setTransformationMatrix(Matrix33D::translation(2,2));
+    opUnion.applyLocalTransformation();
+    assert(opUnion.intersect(4.5, 2.5));
+    assert(!opUnion.intersect(0,0));
+    std::cout << "Test of applyLocalTransformation passed" << std::endl;
 
     return 0;
 }

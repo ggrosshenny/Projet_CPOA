@@ -42,6 +42,8 @@ public:
      */
     CsgDisk(double x, double y, double radius);
 
+    ~CsgDisk() {}
+
 
 public:
 
@@ -50,6 +52,13 @@ public:
      * @brief applyLocalTransformation apply the transformation matrix on the disk
      */
     void applyLocalTransformation();
+
+
+    /**
+     * @brief applyTransformation apply the given transformation matrix on all vertices of the primitives
+     * @param matTransfo
+     */
+    void applyTransformation(Matrix33D matTransfo);
 
 
     /**

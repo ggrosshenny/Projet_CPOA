@@ -139,7 +139,7 @@ Img2D<Vec2D> imgGradient::gradient33(const Img2DGrey& img_in)
     unsigned int i = 0;
     unsigned int j = 0;
 
-    Vec2D test;
+    //Vec2D test;
 
     Img2D<Vec2D> GradientImage(img_in.getHeight(), img_in.getWidth());
 

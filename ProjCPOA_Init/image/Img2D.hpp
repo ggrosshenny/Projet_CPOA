@@ -168,7 +168,7 @@ DynamicArray<T>& Img2D<T>::operator [](int i)
 
 
 template<typename T>
-Img2D<T>& Img2D<T>::operator=(Img2D<T>& other)
+Img2D<T> Img2D<T>::operator=(Img2D<T>& other)
 {
     if(this != &other)
     {

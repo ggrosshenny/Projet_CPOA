@@ -15,17 +15,17 @@
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow),
-//	m_currentNode(NULL),
-//	m_prim(NULL),
-//	m_oper(NULL),
+    m_currentNode(NULL),
+    m_prim(NULL),
+    m_oper(NULL),
 	m_graphTextEdit(NULL),
 	m_stopSignal(false)
 
 {
 	ui->setupUi(this);
 
-	m_render = new RenderImg();
-//	m_render = new RenderImg(this->m_bb);
+    //m_render = new RenderImg();
+    m_render = new RenderImg(this->m_bb);
 
 	ui->HLayout->insertWidget(0,m_render,99);
 	m_render->setFocusPolicy(Qt::ClickFocus);
@@ -106,12 +106,29 @@ void MainWindow::createPrimtive()
 {
 	int prim =  ui->prim_type->currentIndex();
 	int sides = ui->nb_sides->value();
+    CsgDisk* newDisk;
+    CsgRegularPolygon* newPoly;
+    CsgNode* newNode = NULL;
 
 // VOTRE CODE ICI : primitive creation
-//	m_currentNode = ??
+    switch(prim)
+    {
+        case 0 :
+            newDisk = new CsgDisk();
+            newNode = dynamic_cast<CsgNode*>(newDisk);
+            break;
+        case 1:
+            newPoly = new CsgRegularPolygon(sides);
+            newNode = dynamic_cast<CsgNode*>(newPoly);
+            break;
+    }
 
-	drawTree();
-//	ui->currentNode->setValue(??); // recupere l'id du noeud cree
+    m_tree.addPrimitive(newNode);
+    m_currentNode = newNode;
+    std::cerr << newNode->getId() << std::endl;
+
+    updateTreeRender();
+    ui->currentNode->setValue(newNode->getId()); // recupere l'id du noeud cree
 	updateTextGraph();
 
 }
@@ -124,39 +141,41 @@ void MainWindow::createOperation()
 	int right = ui->id_filsDroit->value();
 
 	std::cout << "createOperation  ";
-	std::cout << "type "<< typeOp;
+    std::cout << "type: "<< typeOp;
 	std::cout << " child: "<< left << " & "<< right;
 	std::cout << std::endl;
 
-//	CsgOperation* oper=NULL;
+    CsgOperation* oper=NULL;
 	switch(typeOp)
 	{
-		case 0:
-
+        case 0:
+            oper = m_tree.joinPrimitives(left, right, op_union);
 			break;
-		case 1:
-
+        case 1:
+            oper = m_tree.joinPrimitives(left, right, op_inter);
 			break;
-		case 2:
-
+        case 2:
+            oper = m_tree.joinPrimitives(left, right, op_diff);
 			break;
 		default:
-			std::cerr << "unknown operation" << std::endl;
+            std::cerr << "unknown operation. Valid operations are : 0 -> union, 1 -> intersection, 2 -> difference." << std::endl;
 			return;
 			break;
 	};
 
-//	if (oper == NULL)
-//		return;
+    if (oper == NULL)
+        return;
 
 // mettre a jour ui->currentNode ui->id_filsGauche ui->id_filsDroit
 
-//	m_transfo = Matrix33d::identity();
-//	m_current_center = oper->getBBox().center();
-//	m_currentNode = oper;
+    m_transfo = Matrix33D::identity();
+    m_current_center = oper->BBox.getCenter();
+    m_currentNode = oper;
 
 // mettre a jour ui->currentNode ui->id_filsGauche ui->id_filsDroit
-
+    ui->currentNode->setValue(oper->getId());
+    ui->id_filsGauche->setValue(left);
+    ui->id_filsDroit->setValue(right);
 
 	updateTreeRender();
 
@@ -167,7 +186,23 @@ void MainWindow::createOperation()
 
 void MainWindow::applyTransfo()
 {
-//	m_transfo = m_currentNode->getTransfo();
+
+    m_transfo = m_currentNode->getTransformationMatrix();
+
+    if(dynamic_cast<CsgOperation*>(m_currentNode) != NULL)
+    {
+        dynamic_cast<CsgOperation*>(m_currentNode)->applyLocalTransformation();
+    }
+    else if(dynamic_cast<CsgDisk*>(m_currentNode) != NULL)
+    {
+        dynamic_cast<CsgDisk*>(m_currentNode)->applyLocalTransformation();
+    }
+    else if(dynamic_cast<CsgRegularPolygon*>(m_currentNode) != NULL)
+    {
+        dynamic_cast<CsgRegularPolygon*>(m_currentNode)->applyLocalTransformation();
+    }
+
+    m_currentNode->setTransformationMatrix(Matrix33D::identity());
 	resetTransfoWidgets();
 	updateTreeRender();
 }
@@ -188,7 +223,7 @@ void MainWindow::resetTransfoWidgets()
 
 void MainWindow::resetTransfo()
 {
-//	m_currentNode->setTransfo(m_transfo);
+    m_currentNode->setTransformationMatrix(m_transfo);
 	resetTransfoWidgets();
 }
 
@@ -196,9 +231,26 @@ void MainWindow::transfoChanged()
 {
 	// recupere la primitive courante et lui applique les transformations
 	// VOTRE CODE ICI
+    //m_transfo = m_currentNode->getTransformationMatrix();
+    m_transfo = m_currentNode->getTransformationMatrix();
+    m_transfo.addScale(ui->dsb_s->value(), ui->dsb_s->value());
+    m_transfo.rotate(ui->dsb_Rot->value());
+    m_transfo.translate(ui->dsb_tx->value(), ui->dsb_ty->value());
+    m_transfo = m_transfo * m_currentNode->getInversedTransformationMatrix();
+    m_currentNode->setTransformationMatrix(m_transfo);
 
-
-	// de même avec un noeud Operation !
+//    if(dynamic_cast<CsgOperation*>(m_currentNode) != NULL)
+//    {
+//        dynamic_cast<CsgOperation*>(m_currentNode)->applyLocalTransformation();
+//    }
+//    else if(dynamic_cast<CsgDisk*>(m_currentNode) != NULL)
+//    {
+//        dynamic_cast<CsgDisk*>(m_currentNode)->applyLocalTransformation();
+//    }
+//    else if(dynamic_cast<CsgRegularPolygon*>(m_currentNode) != NULL)
+//    {
+//        dynamic_cast<CsgRegularPolygon*>(m_currentNode)->applyLocalTransformation();
+//    }
 
 	updateTreeRender();
 }
@@ -224,9 +276,10 @@ void MainWindow::transfoSliderChanged()
 	else
 		ui->dsb_s->setValue(1.0/(1.0-ss/S2_FACTOR));
 
+    transfoChanged();
+
 	m_stopSignal = false;
 
-	transfoChanged();
 }
 
 void MainWindow::transfoSpinChanged()
@@ -261,6 +314,14 @@ void MainWindow::loadImage()
 	if (!fileName.isEmpty())
 	{
 		std::string strFN = fileName.toStdString();
+
+        std::ifstream in(strFN.c_str());
+        if (!in.good())
+        {
+            std::cerr << "Unable to open file " << strFN << std::endl;
+            return;
+        }
+
 		// load texture
 		m_render->loadTexture(strFN);
 		update();
@@ -274,7 +335,15 @@ void MainWindow::saveImage()
 	if (!fileName.isEmpty())
 	{
 		std::string strFN = fileName.toStdString();
-//		m_render->getImg().savePGMascii(strFN);
+
+        std::ifstream in(strFN.c_str());
+        if (!in.good())
+        {
+            std::cerr << "Unable to open file " << strFN << std::endl;
+            return;
+        }
+
+        m_render->getImg().saveImageToPGMFile(strFN);
 	}
 }
 
@@ -287,6 +356,7 @@ void MainWindow::drawSobel()
 
 void MainWindow::loadCSG()
 {
+    CsgOperation* op;
 	QString fileName = QFileDialog::getOpenFileName(this,
 									tr("Open File"), QDir::currentPath(),tr("csg (*.csg);;all (*.*)"));
 	if (!fileName.isEmpty())
@@ -301,16 +371,34 @@ void MainWindow::loadCSG()
 		}
 
 	// VOTRE CODE ICI
+        m_tree.clear();
+        m_tree << strFN;
 
 		 updateTextGraph();
+         updateTreeRender();
 
 // mettre a jour ui->currentNode ui->id_filsGauche ui->id_filsDroit ui->currentNode
+         auto it = m_tree.treesList.begin();
+         ++it;
+         ui->currentNode->setValue(it->first);
+
+         if((op = dynamic_cast<CsgOperation*>(ui->currentNode)) != NULL)
+         {
+             ui->id_filsGauche->setValue(op->leftChild->getId());
+             ui->id_filsDroit->setValue(op->rightChild->getId());
+         }
+         else
+         {
+             ui->id_filsDroit->setValue(0);
+             ui->id_filsGauche->setValue(0);
+         }
 	}
 }
 
 // same as load but no clear before readind the tree
 void MainWindow::appendCSG()
 {
+    CsgOperation* op;
 	QString fileName = QFileDialog::getOpenFileName(this,
 									tr("Open File"), QDir::currentPath(),tr("csg (*.csg);;all (*.*)"));
 	if (!fileName.isEmpty())
@@ -318,13 +406,35 @@ void MainWindow::appendCSG()
 		std::string strFN = fileName.toStdString();
 
 	// VOTRE CODE ICI
+        std::ifstream in(strFN.c_str());
+        if (!in.good())
+        {
+            std::cerr << "Unable to open file " << strFN << std::endl;
+            return;
+        }
+
+    // VOTRE CODE ICI
+        m_tree << strFN;
+
+        // mettre a jour ui->currentNode ui->id_filsGauche ui->id_filsDroit ui->currentNode
+         auto it = m_tree.treesList.begin();
+         ++it;
+         ui->currentNode->setValue(it->first);
+
+         if((op = dynamic_cast<CsgOperation*>(ui->currentNode)) != NULL)
+         {
+             ui->id_filsGauche->setValue(op->leftChild->getId());
+             ui->id_filsDroit->setValue(op->rightChild->getId());
+         }
+         else
+         {
+             ui->id_filsDroit->setValue(0);
+             ui->id_filsGauche->setValue(0);
+         }
 
 
 		 updateTextGraph();
 		updateTreeRender();
-
-// mettre a jour ui->currentNode ui->id_filsGauche ui->id_filsDroit ui->currentNode
-
 	}
 }
 
@@ -336,44 +446,69 @@ void MainWindow::saveCSG()
 	{
 		std::string strFN = fileName.toStdString();
 
-	// VOTRE CODE ICI
+        std::ifstream in(strFN.c_str());
+        if (!in.good())
+        {
+            std::cerr << "Unable to open file " << strFN << std::endl;
+            return;
+        }
 
+	// VOTRE CODE ICI
+        m_tree >> strFN;
 	}
 }
 
 void MainWindow::clearCSG()
 {
-//	m_tree.clear();
+    m_tree.clear();
 	updateTextGraph();
 	updateTreeRender();
 // mettre a jour ui->currentNode ui->id_filsGauche ui->id_filsDroit ui->currentNode
+    ui->currentNode->setValue(0);
+    ui->id_filsDroit->setValue(0);
+    ui->id_filsGauche->setValue(0);
 }
 
 
 void MainWindow::clone()
 {
-	// VOTRE CODE ICI
+    CsgOperation* op;
+   m_currentNode =  m_tree.clone(m_currentNode->getId());
 
 	updateTextGraph();
 	updateTreeRender();
 
 // mettre a jour ui->currentNode ui->id_filsGauche ui->id_filsDroit ui->currentNode
-
+    ui->currentNode->setValue(m_currentNode->getId());
+    if((op = dynamic_cast<CsgOperation*>(m_currentNode)) != NULL)
+    {
+        ui->id_filsGauche->setValue(op->leftChild->getId());
+        ui->id_filsDroit->setValue(op->rightChild->getId());
+    }
+    else
+    {
+        ui->id_filsDroit->setValue(0);
+        ui->id_filsGauche->setValue(0);
+    }
 }
 
 
 void MainWindow::drawTree()
 {
 	m_render->clean();
-//	m_tree.drawInImage( m_render->getImg() );
 
-	if (ui->checkBox_drawCurrent->isChecked()/* && m_currentNode!=NULL*/)
+    Img2DGrey temp(m_render->getHeight(), m_render->getWidth());
+    m_render->getImg() = temp;
+    m_tree.drawInImage( m_render->getImg() );
+
+    if (ui->checkBox_drawCurrent->isChecked() && m_currentNode!=NULL)
 	{
 		// OPTION: trace le noeud courant dans l'image de m_render
 		// VOTRE CODE ICI
 
 		m_render->setBBDraw(true);
-//		m_bb = m_currentNode->getBBox();
+        m_bb = m_currentNode->BBox;
+        m_tree.drawInImage(m_currentNode, m_render->getImg(), 125);
 	}
 	else
 	{
@@ -381,23 +516,24 @@ void MainWindow::drawTree()
 	}
 
 // trace les 2 fils de l'operation avec 2 niveau de gris pour vizu
-/*	int idf = ui->id_filsGauche->value();
-	if (idf != 0)
-	{
-		CsgNode* fNode = m_tree.fromId(idf);
-		if (fNode->isRoot())
-			m_tree.drawInImage(fNode, m_render->getImg(),175);
-	}
+//    int idf = ui->id_filsGauche->value();
+//	if (idf != 0)
+//	{
+//        auto fNode = m_tree.nodesList.find(idf);
+//        if ((fNode != m_tree.nodesList.end()) && (dynamic_cast<CsgOperation*>(fNode->second) != NULL ))
+//            m_tree.drawInImage(fNode->second, m_render->getImg(),175);
+//	}
 
-	idf = ui->id_filsDroit->value();
-	if (idf != 0)
-	{
-		CsgNode* fNode = m_tree.fromId(idf);
-		if (fNode->isRoot())
-			m_tree.drawInImage(fNode, m_render->getImg(),200);
-	}
-*/
+//	idf = ui->id_filsDroit->value();
+//	if (idf != 0)
+//	{
+//        auto fNode = m_tree.nodesList.find(idf);
+//        if ((fNode != m_tree.nodesList.end()) && (dynamic_cast<CsgOperation*>(fNode->second) != NULL ))
+//            m_tree.drawInImage(fNode->second, m_render->getImg(),200);
+//	}
+
 	m_render->updateDataTexture();
+    //std::cout << m_render->getImg() << std::endl;
 }
 
 
@@ -447,9 +583,24 @@ void MainWindow::updateTextGraph()
 
 void MainWindow::currentNodeChanged(int id)
 {
-//	m_currentNode = m_tree.fromId(id);
+    CsgOperation* op;
+    auto it = m_tree.nodesList.find(id);
 
-// VOTRE CODE ICI
+    if(it != m_tree.nodesList.end())
+    {
+        m_currentNode = it->second;
+
+        if((op = dynamic_cast<CsgOperation*>(m_currentNode)) != NULL)
+        {
+            ui->id_filsGauche->setValue(op->leftChild->getId());
+            ui->id_filsDroit->setValue(op->rightChild->getId());
+        }
+        else
+        {
+            ui->id_filsDroit->setValue(0);
+            ui->id_filsGauche->setValue(0);
+        }
+    }
 
 	resetTransfoWidgets();
 
@@ -459,6 +610,20 @@ void MainWindow::currentNodeChanged(int id)
 void MainWindow::swapLRRoot()
 {
 // VOTRE CODE ICI
+    CsgOperation* op;
+    CsgNode* temp;
+
+    if((op = dynamic_cast<CsgOperation*>(m_currentNode)) != NULL)
+    {
+        temp = op->leftChild;
+        op->leftChild = op->rightChild;
+        op->rightChild = temp;
+
+        ui->id_filsGauche->setValue(op->leftChild->getId());
+        ui->id_filsDroit->setValue(op->rightChild->getId());
+    }
+
+
 	updateTextGraph();
 	updateTreeRender();
 }
@@ -469,7 +634,18 @@ void MainWindow::unjoinRoot()
 {
 // VOTRE CODE ICI
 
-//	m_currentNode = NULL;
+    CsgOperation* op;
+
+    if((op = dynamic_cast<CsgOperation*>(m_currentNode)) != NULL)
+    {
+        m_tree.removeNode(op);
+    }
+
+    m_currentNode = NULL;
+    ui->currentNode = 0;
+    ui->id_filsGauche->setValue(0);
+    ui->id_filsDroit->setValue(0);
+
 	updateTextGraph();
 	updateTreeRender();
 }

@@ -37,6 +37,7 @@ public:
     BoundingBox(std::initializer_list<double> elementsTopLeft, std::initializer_list<double> elementsBotRight);
 
 
+
 // getter and setter
 public:
 

@@ -48,6 +48,12 @@ public:
     void applySmoothOnPixel(unsigned int pi, unsigned int pj, Img2DGrey& img, unsigned int neighboorSize) const;
 
 
+    /**
+     * @brief getDataPtr get the pointer of the data
+     * @return
+     */
+    unsigned char* getDataPtr();
+
 
 // Image transformations methods
 public:
